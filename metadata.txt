@@ -1,0 +1,16 @@
+[general]
+name=Favourite Layers
+description=Quickly add favorite QGIS browser layers from a toolbar button or the Layer menu.
+about=Adds a custom toolbar button with a drop-down menu of your favorite layers and adds the same Favourite Layers submenu to the QGIS Layer menu. Layers can be added and reordered in the settings dialog. The list is stored in the current QGIS user profile.
+version=1.0.0
+qgisMinimumVersion=3.16
+qgisMaximumVersion=4.99
+author=suprun
+email=serhiysuprun@outlook.com
+category=Layers
+tags=layers,browser,favourites,favorites,toolbar
+icon=icon.png
+license=MIT
+homepage=https://github.com/suprun/favourite_layers
+repository=https://github.com/suprun/favourite_layers
+tracker=https://github.com/suprun/favourite_layers/issues
