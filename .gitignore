@@ -20,8 +20,6 @@ ENV/
 build/
 dist/
 *.egg-info/
-*.qm
-*.zip
 !repo/
 !repo/favourite_layers.zip
 
@@ -50,4 +48,5 @@ resources/
 CLEAR_SETTINGS.md
 AGENTS.md
 scripts/
-i18n/
+/plugins.xml
+/repo/restore.py

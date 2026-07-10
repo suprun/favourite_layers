@@ -65,6 +65,15 @@ def plugin_icon():
 
 
 def toolbar_icon():
+    from qgis.core import QgsSettings
+    settings = QgsSettings()
+    icon_theme = settings.value("favourite_layers/icon_theme", "default")
+
+    if icon_theme == "yellow":
+        icon = local_icon("icon_yellow.svg")
+        if icon and not icon.isNull():
+            return icon
+
     names = ("icon-dark.svg", "icon.svg") if is_dark_interface() else ("icon.svg",)
     for name in names:
         icon = local_icon(name)

@@ -55,15 +55,22 @@ class BrowserLayerTreeView(QTreeView):
 
     def mouseReleaseEvent(self, event):
         if event.button() == QT_LEFT_BUTTON:
-            index = self._add_button_index_at(event_pos(event))
+            pos = event_pos(event)
+            index = self._add_button_index_at(pos)
             if index.isValid():
                 self._request_favourite(index)
+                event.accept()
+                return
+            index = self._info_button_index_at(pos)
+            if index.isValid():
+                self._show_layer_info(index)
                 event.accept()
                 return
         super().mouseReleaseEvent(event)
 
     def mouseMoveEvent(self, event):
-        if self._add_button_index_at(event_pos(event)).isValid():
+        pos = event_pos(event)
+        if self._add_button_index_at(pos).isValid() or self._info_button_index_at(pos).isValid():
             self.viewport().setCursor(QT_POINTING_HAND_CURSOR)
         else:
             self.viewport().unsetCursor()
@@ -83,6 +90,15 @@ class BrowserLayerTreeView(QTreeView):
                     tr("Add this layer to the menu"),
                     self.viewport(),
                     self._add_button_rect(index),
+                )
+                return True
+            index = self._info_button_index_at(pos)
+            if index.isValid():
+                QToolTip.showText(
+                    event_global_pos(event),
+                    tr("Show layer properties"),
+                    self.viewport(),
+                    self._info_button_rect(index),
                 )
                 return True
             QToolTip.hideText()
@@ -127,6 +143,32 @@ class BrowserLayerTreeView(QTreeView):
 
     def _add_button_rect(self, index):
         return BrowserLayerDelegate.add_button_rect(self.visualRect(index))
+
+    def _info_button_index_at(self, pos):
+        index = self.indexAt(pos)
+        if not index.isValid() or index.column() != 0:
+            return QModelIndex()
+        proxy = self.model()
+        if proxy is None or not proxy.is_addable(index):
+            return QModelIndex()
+        if not self._info_button_rect(index).contains(pos):
+            return QModelIndex()
+        return index
+
+    def _info_button_rect(self, index):
+        return BrowserLayerDelegate.info_button_rect(self.visualRect(index))
+
+    def _show_layer_info(self, index):
+        proxy = self.model()
+        if proxy is None:
+            return
+        favourite = proxy.favourite_from_proxy_index(index)
+        if not favourite:
+            return
+
+        from .common import SourceInfoDialog
+        dialog = SourceInfoDialog(favourite, self.window())
+        exec_qt(dialog)
 
     def _drag_pixmap(self, favourites):
         max_rows = 5

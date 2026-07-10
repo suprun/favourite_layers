@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugins>
+  <pyqgis_plugin name="Favourite Layers" version="1.1.0">
+    <description><![CDATA[Quickly add favorite QGIS browser layers from a toolbar button or the Layer menu.]]></description>
+    <about><![CDATA[Adds a custom toolbar button with a drop-down menu of your favorite layers and adds the same Favourite Layers submenu to the QGIS Layer menu. Layers can be added and reordered in the settings dialog. The list is stored in the current QGIS user profile.]]></about>
+
+    <version>1.1.0</version>
+    <changelog><![CDATA[What's new in version 1.1.0:
+- Added 'i' (Information) button to view detailed layer source properties in a read-only dialog.
+- Unified drag-and-drop indicator inside the favorites list as a thick blue line.
+- Added custom plugin icon selection in the settings dialog (adaptive Default theme or Yellow icon).
+- Improved dark theme UI rendering for the source information panel.
+- Fixed dialog execution and button box compatibility issues for QGIS 4.0+ (Qt6/Qt5).
+- Cleaned up translation lookups and added support for DE, ES, FR, IT, PT, UK, and EN.]]></changelog>
+    <qgis_minimum_version>3.16</qgis_minimum_version>
+    <qgis_maximum_version>4.99</qgis_maximum_version>
+
+    <homepage><![CDATA[https://github.com/suprun/favourite_layers]]></homepage>
+    <tracker><![CDATA[https://github.com/suprun/favourite_layers/issues]]></tracker>
+    <repository><![CDATA[https://github.com/suprun/favourite_layers]]></repository>
+
+    <author_name><![CDATA[suprun]]></author_name>
+    <email><![CDATA[suprun.serhiy+qgis@gmail.com]]></email>
+
+    <file_name>favourite_layers.zip</file_name>
+    <download_url><![CDATA[file:///e:/onedrive/pyqgis/favourite_layers/repo/favourite_layers.zip]]></download_url>
+
+    <icon>icon.png</icon>
+    <experimental>false</experimental>
+    <deprecated>False</deprecated>
+  </pyqgis_plugin>
+</plugins>

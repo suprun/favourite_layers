@@ -170,6 +170,12 @@ class FavouriteLayersPlugin:
                     break
 
     def _rebuild_menu(self):
+        from .icons import toolbar_icon
+        if self.tool_button is not None:
+            self.tool_button.setIcon(toolbar_icon())
+        if self.layer_menu is not None:
+            self.layer_menu.setIcon(toolbar_icon())
+
         self._populate_menu(self.menu)
         if self.layer_menu is not None:
             self._populate_menu(self.layer_menu)

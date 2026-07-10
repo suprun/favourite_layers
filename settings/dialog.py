@@ -81,6 +81,14 @@ class SettingsDialog(QDialog):
         self._load_favourites(favourites)
         self._update_buttons()
 
+        from qgis.core import QgsSettings
+        settings = QgsSettings()
+        icon_theme = settings.value("favourite_layers/icon_theme", "default")
+        if icon_theme == "yellow":
+            self.btn_yellow_icon.setChecked(True)
+        else:
+            self.btn_default_icon.setChecked(True)
+
         self.list_widget.itemSelectionChanged.connect(self._update_buttons)
         self.tree_view.selectionModel().selectionChanged.connect(self._update_buttons)
 
@@ -125,10 +133,49 @@ class SettingsDialog(QDialog):
         splitter.setStretchFactor(1, 1)
         main_layout.addWidget(splitter, 1)
 
+        bottom_layout = QHBoxLayout()
+
+        icon_label = QLabel(tr("Plugin icon:"), self)
+        bottom_layout.addWidget(icon_label)
+
+        from qgis.PyQt.QtWidgets import QButtonGroup, QToolButton
+        from ..icons import local_icon, is_dark_interface
+
+        self.icon_group = QButtonGroup(self)
+        self.icon_group.setExclusive(True)
+
+        self.btn_default_icon = QToolButton(self)
+        self.btn_default_icon.setCheckable(True)
+        default_icon_name = "icon-dark.svg" if is_dark_interface() else "icon.svg"
+        self.btn_default_icon.setIcon(local_icon(default_icon_name))
+        self.btn_default_icon.setToolTip(tr("Default theme icon"))
+        self.icon_group.addButton(self.btn_default_icon)
+        bottom_layout.addWidget(self.btn_default_icon)
+
+        self.btn_yellow_icon = QToolButton(self)
+        self.btn_yellow_icon.setCheckable(True)
+        self.btn_yellow_icon.setIcon(local_icon("icon_yellow.svg"))
+        self.btn_yellow_icon.setToolTip(tr("Yellow icon"))
+        self.icon_group.addButton(self.btn_yellow_icon)
+        bottom_layout.addWidget(self.btn_yellow_icon)
+
+        bottom_layout.addStretch(1)
+
         buttons = QDialogButtonBox(QDIALOG_BUTTON_OK | QDIALOG_BUTTON_CANCEL)
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
-        main_layout.addWidget(buttons)
+        bottom_layout.addWidget(buttons)
+
+        main_layout.addLayout(bottom_layout)
+
+    def accept(self):
+        from qgis.core import QgsSettings
+        settings = QgsSettings()
+        if self.btn_yellow_icon.isChecked():
+            settings.setValue("favourite_layers/icon_theme", "yellow")
+        else:
+            settings.setValue("favourite_layers/icon_theme", "default")
+        super().accept()
 
     def _instruction_label(self):
         add_icon = (
@@ -180,7 +227,7 @@ class SettingsDialog(QDialog):
             self._add_separator,
         )
         self.remove_button = self._tool_button(
-            qgis_icon("/mActionRemove.svg", "/mActionDeleteSelected.svg"),
+            qgis_icon("/mActionDeleteSelected.svg"),
             tr("Remove selected menu item"),
             self._remove_selected,
         )
