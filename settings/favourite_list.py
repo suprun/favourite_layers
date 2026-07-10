@@ -88,6 +88,7 @@ class FavouriteListItemDelegate(QStyledItemDelegate):
 class FavouriteListWidget(QListWidget):
     favouritesDropped = pyqtSignal(list, int)
     listAboutToChange = pyqtSignal()
+    internalMoveFinished = pyqtSignal(bool)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -138,8 +139,12 @@ class FavouriteListWidget(QListWidget):
             event.acceptProposedAction()
         elif event.source() == self:
             self._clear_external_drop_row()
+            from ..storage import normalise_favourite
+            before_state = [normalise_favourite(self.item(i).data(QT_USER_ROLE)) for i in range(self.count())]
             self.listAboutToChange.emit()
             super().dropEvent(event)
+            after_state = [normalise_favourite(self.item(i).data(QT_USER_ROLE)) for i in range(self.count())]
+            self.internalMoveFinished.emit(before_state != after_state)
         else:
             self._clear_external_drop_row()
             super().dropEvent(event)

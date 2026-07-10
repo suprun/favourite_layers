@@ -7,6 +7,7 @@ changelog=What's new in version 1.1.0:
   - Added 'i' (Information) button to view detailed layer source properties.
   - Added custom plugin icon selection in the settings dialog (adaptive Default theme or Yellow icon).
   - Added multi-language support for DE, ES, FR, IT, PT, UK, and EN.
+  - Fixed minor bugs and improved overall stability.
 qgisMinimumVersion=3.16
 qgisMaximumVersion=4.99
 author=suprun

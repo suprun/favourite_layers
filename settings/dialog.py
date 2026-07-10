@@ -54,6 +54,7 @@ class SettingsDialog(QDialog):
         self.list_widget.setSelectionMode(QABSTRACT_ITEM_VIEW_SINGLE_SELECTION)
         self.list_widget.favouritesDropped.connect(self._insert_favourites)
         self.list_widget.listAboutToChange.connect(self._push_undo_snapshot)
+        self.list_widget.internalMoveFinished.connect(self._on_internal_move_finished)
         self.list_widget.itemChanged.connect(self._update_item_name)
 
         self.browser_model = self._browser_model()
@@ -463,6 +464,11 @@ class SettingsDialog(QDialog):
         if len(self._undo_stack) > 100:
             self._undo_stack.pop(0)
         self._update_buttons()
+
+    def _on_internal_move_finished(self, changed):
+        if not changed and self._undo_stack:
+            self._undo_stack.pop()
+            self._update_buttons()
 
     def _restore_snapshot(self, snapshot):
         selected_row = self._selected_list_row()
