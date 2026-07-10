@@ -15,6 +15,7 @@ from ..qt_compat import (
     QT_ALIGN_CENTER,
     QT_LEFT_BUTTON,
     QT_MOVE_ACTION,
+    QT_IGNORE_ACTION,
     QT_POINTING_HAND_CURSOR,
     QT_TOOLTIP_EVENT,
     QT_USER_ROLE,
@@ -139,12 +140,30 @@ class FavouriteListWidget(QListWidget):
             event.acceptProposedAction()
         elif event.source() == self:
             self._clear_external_drop_row()
-            from ..storage import normalise_favourite
-            before_state = [normalise_favourite(self.item(i).data(QT_USER_ROLE)) for i in range(self.count())]
+            source_row = self.currentRow()
+            if source_row < 0:
+                event.ignore()
+                return
+            target_row = self._drop_row_from_pos(event_pos(event))
+            if target_row < 0:
+                target_row = self.count()
+
+            # Якщо елемент кинули на самого себе або після самого себе, змін немає
+            if target_row == source_row or target_row == source_row + 1:
+                event.setDropAction(QT_IGNORE_ACTION)
+                event.accept()
+                return
+
             self.listAboutToChange.emit()
-            super().dropEvent(event)
-            after_state = [normalise_favourite(self.item(i).data(QT_USER_ROLE)) for i in range(self.count())]
-            self.internalMoveFinished.emit(before_state != after_state)
+            item = self.takeItem(source_row)
+            insert_row = target_row
+            if source_row < target_row:
+                insert_row -= 1
+            self.insertItem(insert_row, item)
+            self.setCurrentItem(item)
+            self.internalMoveFinished.emit(True)
+            event.setDropAction(QT_IGNORE_ACTION)
+            event.accept()
         else:
             self._clear_external_drop_row()
             super().dropEvent(event)
