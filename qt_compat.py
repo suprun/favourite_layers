@@ -8,9 +8,9 @@ from qgis.PyQt.QtWidgets import (
 )
 
 try:
-    from qgis.PyQt.QtGui import QAction
+    from qgis.PyQt.QtGui import QAction  # noqa: F401
 except ImportError:
-    from qgis.PyQt.QtWidgets import QAction
+    from qgis.PyQt.QtWidgets import QAction  # noqa: F401
 
 
 def _qt_enum(enum_name, value_name):

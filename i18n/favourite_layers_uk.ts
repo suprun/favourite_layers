@@ -191,5 +191,41 @@
                                                                                                                                                                                                                                                             <source>Yellow icon</source>
                                                                                                                                                                                                                                                             <translation>Жовта іконка</translation>
                                                                                                                                                                                                                                                         </message>
-                                                                                                                                                                                                                                                        </context>
+                                                                                                                                                                                                                                                            <message>
+        <source>Select plugin icon theme</source>
+        <translation>Виберіть тему іконки плагіна</translation>
+    </message>
+    <message>
+        <source>Default</source>
+        <translation>За замовчуванням</translation>
+    </message>
+    <message>
+        <source>Yellow</source>
+        <translation>Жовтий</translation>
+    </message>
+    <message>
+        <source>Orange</source>
+        <translation>Помаранчевий</translation>
+    </message>
+    <message>
+        <source>Lime</source>
+        <translation>Лаймовий</translation>
+    </message>
+    <message>
+        <source>Jade</source>
+        <translation>Нефритовий</translation>
+    </message>
+    <message>
+        <source>Violet</source>
+        <translation>Фіолетовий</translation>
+    </message>
+    <message>
+        <source>Pink</source>
+        <translation>Рожевий</translation>
+    </message>
+    <message>
+        <source>Show button in Browser panel</source>
+        <translation>Показувати кнопку на панелі Браузера</translation>
+    </message>
+</context>
                                                                                                                                                                                                                                                         </TS>

@@ -30,6 +30,7 @@ class FavouriteLayersPlugin:
         self.layer_menu_action = None
         self.translator = None
         self.favourites = []
+        self.browser_buttons = []
 
     def initGui(self):
         self._load_translator()
@@ -48,8 +49,10 @@ class FavouriteLayersPlugin:
 
         self._add_layer_menu()
         self._rebuild_menu()
+        self._rebuild_browser_buttons()
 
     def unload(self):
+        self._clear_browser_buttons()
         self._remove_layer_menu()
 
         if self.translator is not None:
@@ -169,6 +172,54 @@ class FavouriteLayersPlugin:
                     self.translator = translator
                     break
 
+    def _clear_browser_buttons(self):
+        for tool_button, action, toolbar in self.browser_buttons:
+            try:
+                if toolbar is not None:
+                    toolbar.removeAction(action)
+            except Exception:
+                pass
+            try:
+                tool_button.setParent(None)
+                tool_button.deleteLater()
+            except Exception:
+                pass
+            try:
+                action.deleteLater()
+            except Exception:
+                pass
+        self.browser_buttons.clear()
+
+    def _rebuild_browser_buttons(self):
+        self._clear_browser_buttons()
+
+        from qgis.core import QgsSettings
+        settings = QgsSettings()
+        show_in_browser = settings.value("favourite_layers/show_in_browser", True, type=bool)
+        if not show_in_browser:
+            return
+
+        from qgis.PyQt.QtWidgets import QDockWidget, QToolBar, QToolButton
+        from .icons import toolbar_icon
+
+        main_window = self.iface.mainWindow()
+        if main_window is None:
+            return
+
+        docks = main_window.findChildren(QDockWidget)
+        for dock in docks:
+            if dock.objectName() in ("Browser", "Browser2") or dock.metaObject().className() == "QgsBrowserDockWidget":
+                toolbar = dock.findChild(QToolBar)
+                if toolbar is not None:
+                    btn = QToolButton(toolbar)
+                    btn.setIcon(toolbar_icon())
+                    btn.setToolTip(tr("Favourite layers"))
+                    btn.setPopupMode(QTOOL_BUTTON_INSTANT_POPUP)
+                    btn.setMenu(self.menu)
+                    
+                    action = toolbar.addWidget(btn)
+                    self.browser_buttons.append((btn, action, toolbar))
+
     def _rebuild_menu(self):
         from .icons import toolbar_icon
         if self.tool_button is not None:
@@ -179,6 +230,8 @@ class FavouriteLayersPlugin:
         self._populate_menu(self.menu)
         if self.layer_menu is not None:
             self._populate_menu(self.layer_menu)
+
+        self._rebuild_browser_buttons()
 
     def _populate_menu(self, menu):
         menu.clear()

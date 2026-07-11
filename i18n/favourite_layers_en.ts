@@ -191,5 +191,41 @@
         <source>Yellow icon</source>
         <translation>Yellow icon</translation>
     </message>
+    <message>
+        <source>Select plugin icon theme</source>
+        <translation>Select plugin icon theme</translation>
+    </message>
+    <message>
+        <source>Default</source>
+        <translation>Default</translation>
+    </message>
+    <message>
+        <source>Yellow</source>
+        <translation>Yellow</translation>
+    </message>
+    <message>
+        <source>Orange</source>
+        <translation>Orange</translation>
+    </message>
+    <message>
+        <source>Lime</source>
+        <translation>Lime</translation>
+    </message>
+    <message>
+        <source>Jade</source>
+        <translation>Jade</translation>
+    </message>
+    <message>
+        <source>Violet</source>
+        <translation>Violet</translation>
+    </message>
+    <message>
+        <source>Pink</source>
+        <translation>Pink</translation>
+    </message>
+    <message>
+        <source>Show button in Browser panel</source>
+        <translation>Show button in Browser panel</translation>
+    </message>
 </context>
 </TS>

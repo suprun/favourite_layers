@@ -84,11 +84,10 @@ class SettingsDialog(QDialog):
 
         from qgis.core import QgsSettings
         settings = QgsSettings()
-        icon_theme = settings.value("favourite_layers/icon_theme", "default")
-        if icon_theme == "yellow":
-            self.btn_yellow_icon.setChecked(True)
-        else:
-            self.btn_default_icon.setChecked(True)
+        self.current_icon_theme = settings.value("favourite_layers/icon_theme", "default")
+        self._update_icon_button()
+        show_in_browser = settings.value("favourite_layers/show_in_browser", True, type=bool)
+        self.cb_show_in_browser.setChecked(show_in_browser)
 
         self.list_widget.itemSelectionChanged.connect(self._update_buttons)
         self.tree_view.selectionModel().selectionChanged.connect(self._update_buttons)
@@ -139,26 +138,47 @@ class SettingsDialog(QDialog):
         icon_label = QLabel(tr("Plugin icon:"), self)
         bottom_layout.addWidget(icon_label)
 
-        from qgis.PyQt.QtWidgets import QButtonGroup, QToolButton
+        from qgis.PyQt.QtWidgets import QToolButton, QMenu, QAction, QCheckBox
+        from ..qt_compat import QTOOL_BUTTON_INSTANT_POPUP
         from ..icons import local_icon, is_dark_interface
 
-        self.icon_group = QButtonGroup(self)
-        self.icon_group.setExclusive(True)
+        self.btn_plugin_icon = QToolButton(self)
+        self.btn_plugin_icon.setPopupMode(QTOOL_BUTTON_INSTANT_POPUP)
+        self.btn_plugin_icon.setToolTip(tr("Select plugin icon theme"))
 
-        self.btn_default_icon = QToolButton(self)
-        self.btn_default_icon.setCheckable(True)
-        default_icon_name = "icon-dark.svg" if is_dark_interface() else "icon.svg"
-        self.btn_default_icon.setIcon(local_icon(default_icon_name))
-        self.btn_default_icon.setToolTip(tr("Default theme icon"))
-        self.icon_group.addButton(self.btn_default_icon)
-        bottom_layout.addWidget(self.btn_default_icon)
+        self.icon_menu = QMenu(self)
+        self.themes = [
+            ("default", tr("Default")),
+            ("yellow", tr("Yellow")),
+            ("orange", tr("Orange")),
+            ("lime", tr("Lime")),
+            ("jade", tr("Jade")),
+            ("violet", tr("Violet")),
+            ("pink", tr("Pink")),
+        ]
 
-        self.btn_yellow_icon = QToolButton(self)
-        self.btn_yellow_icon.setCheckable(True)
-        self.btn_yellow_icon.setIcon(local_icon("icon_yellow.svg"))
-        self.btn_yellow_icon.setToolTip(tr("Yellow icon"))
-        self.icon_group.addButton(self.btn_yellow_icon)
-        bottom_layout.addWidget(self.btn_yellow_icon)
+        from qgis.PyQt.QtGui import QIcon
+        for theme_id, theme_name in self.themes:
+            if theme_id == "default":
+                icon = local_icon("icon-dark.svg" if is_dark_interface() else "icon.svg")
+            else:
+                icon = QIcon()
+                if is_dark_interface():
+                    icon = local_icon("icon_{}-dark.svg".format(theme_id))
+                if icon.isNull():
+                    icon = local_icon("icon_{}.svg".format(theme_id))
+            
+            action = QAction(icon, theme_name, self)
+            action.setData(theme_id)
+            action.triggered.connect(self._on_theme_selected)
+            self.icon_menu.addAction(action)
+
+        self.btn_plugin_icon.setMenu(self.icon_menu)
+        bottom_layout.addWidget(self.btn_plugin_icon)
+
+        bottom_layout.addSpacing(10)
+        self.cb_show_in_browser = QCheckBox(tr("Show button in Browser panel"), self)
+        bottom_layout.addWidget(self.cb_show_in_browser)
 
         bottom_layout.addStretch(1)
 
@@ -169,13 +189,31 @@ class SettingsDialog(QDialog):
 
         main_layout.addLayout(bottom_layout)
 
+    def _on_theme_selected(self):
+        action = self.sender()
+        if action:
+            self.current_icon_theme = action.data()
+            self._update_icon_button()
+
+    def _update_icon_button(self):
+        from qgis.PyQt.QtGui import QIcon
+        from ..icons import local_icon, is_dark_interface
+        if self.current_icon_theme == "default":
+            icon = local_icon("icon-dark.svg" if is_dark_interface() else "icon.svg")
+        else:
+            icon = QIcon()
+            if is_dark_interface():
+                icon = local_icon("icon_{}-dark.svg".format(self.current_icon_theme))
+            if icon.isNull():
+                icon = local_icon("icon_{}.svg".format(self.current_icon_theme))
+        
+        self.btn_plugin_icon.setIcon(icon)
+
     def accept(self):
         from qgis.core import QgsSettings
         settings = QgsSettings()
-        if self.btn_yellow_icon.isChecked():
-            settings.setValue("favourite_layers/icon_theme", "yellow")
-        else:
-            settings.setValue("favourite_layers/icon_theme", "default")
+        settings.setValue("favourite_layers/icon_theme", self.current_icon_theme)
+        settings.setValue("favourite_layers/show_in_browser", self.cb_show_in_browser.isChecked())
         super().accept()
 
     def _instruction_label(self):
@@ -503,9 +541,10 @@ class SettingsDialog(QDialog):
         self.add_button.setEnabled(bool(self.tree_view.selected_favourites()))
 
     def favourites(self):
-        return normalise_favourites(
-            [
-                normalise_favourite(self.list_widget.item(row).data(QT_USER_ROLE))
-                for row in range(self.list_widget.count())
-            ]
-        )
+        items = [
+            normalise_favourite(self.list_widget.item(row).data(QT_USER_ROLE))
+            for row in range(self.list_widget.count())
+        ]
+        while items and is_separator(items[0]):
+            items.pop(0)
+        return normalise_favourites(items)

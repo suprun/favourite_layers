@@ -1,6 +1,6 @@
 import json
 
-from qgis.PyQt.QtCore import pyqtSignal, QModelIndex, QPoint, QRect, Qt
+from qgis.PyQt.QtCore import pyqtSignal, QModelIndex, QRect
 from qgis.PyQt.QtGui import QPainter
 from qgis.PyQt.QtWidgets import (
     QLineEdit,

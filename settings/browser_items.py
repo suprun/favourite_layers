@@ -168,16 +168,16 @@ def mime_uri_to_favourite(item, model=None, index=QModelIndex()):
 
         return normalise_favourite(
             {
-                "name": str(getattr(mime_uri, "name", "") or "")
-                or _item_name(item, model, index),
+                "name": (str(getattr(mime_uri, "name", "") or "") or
+                         _item_name(item, model, index)),
                 "uri": uri,
-                "provider_key": str(getattr(mime_uri, "providerKey", "") or "")
-                or _provider_key(item),
-                "layer_type": mime_uri_layer_type_to_name(
+                "provider_key": (str(getattr(mime_uri, "providerKey", "") or "") or
+                                 _provider_key(item)),
+                "layer_type": (mime_uri_layer_type_to_name(
                     getattr(mime_uri, "layerType", "")
-                )
-                or layer_type_to_name(_safe_call(item, "mapLayerType", ""))
-                or browser_layer_type_to_name(item),
+                ) or
+                layer_type_to_name(_safe_call(item, "mapLayerType", "")) or
+                browser_layer_type_to_name(item)),
                 "path": _item_path(item),
                 "icon_name": _item_icon_name(item),
             }

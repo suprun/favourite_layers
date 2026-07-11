@@ -69,10 +69,16 @@ def toolbar_icon():
     settings = QgsSettings()
     icon_theme = settings.value("favourite_layers/icon_theme", "default")
 
-    if icon_theme == "yellow":
-        icon = local_icon("icon_yellow.svg")
-        if icon and not icon.isNull():
-            return icon
+    if icon_theme in ("yellow", "orange", "lime", "jade", "violet", "pink"):
+        names = []
+        if is_dark_interface():
+            names.append("icon_{}-dark.svg".format(icon_theme))
+        names.append("icon_{}.svg".format(icon_theme))
+        
+        for name in names:
+            icon = local_icon(name)
+            if icon and not icon.isNull():
+                return icon
 
     names = ("icon-dark.svg", "icon.svg") if is_dark_interface() else ("icon.svg",)
     for name in names:
@@ -187,22 +193,22 @@ def layer_icon(favourite):
 
 def _is_vector_tile(provider_key, uri, layer_type):
     return (
-        layer_type == "VectorTileLayer"
-        or provider_key in ("vectortile", "vector_tile", "vector_tiles")
-        or "type=vector" in uri
-        or "type=vector-tile" in uri
-        or "vectortile" in uri
-        or "vector_tile" in uri
+        layer_type == "VectorTileLayer" or
+        provider_key in ("vectortile", "vector_tile", "vector_tiles") or
+        "type=vector" in uri or
+        "type=vector-tile" in uri or
+        "vectortile" in uri or
+        "vector_tile" in uri
     )
 
 
 def _is_raster_tile(provider_key, uri):
     return (
-        provider_key in ("xyz", "wmts")
-        or "type=xyz" in uri
-        or "type=wmts" in uri
-        or "zmax=" in uri
-        or "{z}" in uri
+        provider_key in ("xyz", "wmts") or
+        "type=xyz" in uri or
+        "type=wmts" in uri or
+        "zmax=" in uri or
+        "{z}" in uri
     )
 
 
