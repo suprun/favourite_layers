@@ -133,6 +133,38 @@ def add_separator_icon():
     return separator_icon()
 
 
+def transparency_slider_icon(checked=False):
+    icon_name = (
+        "transparency_slider_checked" if checked else "transparency_slider"
+    )
+    names = (
+        ("{}-dark.svg".format(icon_name), "{}.svg".format(icon_name))
+        if is_dark_interface()
+        else ("{}.svg".format(icon_name),)
+    )
+    for name in names:
+        icon = local_icon(name)
+        if icon and not icon.isNull():
+            return icon
+
+    fallback_names = (
+        (
+            "/mIconSuccess.svg",
+            "/mIconCheckboxChecked.svg",
+            "/mActionTransparency.svg",
+            "/mIconOpacity.svg",
+            "/mActionSettings.svg",
+        )
+        if checked
+        else (
+            "/mActionTransparency.svg",
+            "/mIconOpacity.svg",
+            "/mActionSettings.svg",
+        )
+    )
+    return qgis_icon(*fallback_names)
+
+
 def layer_type_icon(layer_type):
     icons = {
         "VectorLayer": ("/mIconVectorLayer.svg", "/mIconVector.svg"),

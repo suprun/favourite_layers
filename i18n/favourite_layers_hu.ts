@@ -227,5 +227,16 @@
             <source>Show button in Browser panel</source>
             <translation>Gomb megjelenítése a böngésző panelen</translation>
         </message>
+        <message>
+            <location filename="../settings/dialog.py" line="274"/>
+            <location filename="../settings/favourite_list.py" line="331"/>
+            <source>Add transparency slider when the layer is added</source>
+            <translation>Átlátszóság-csúszka hozzáadása a réteg hozzáadásakor</translation>
+        </message>
+        <message>
+            <location filename="../settings/dialog.py" line="204"/>
+            <source>Help</source>
+            <translation>Súgó</translation>
+        </message>
     </context>
 </TS>

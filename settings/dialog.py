@@ -1,10 +1,12 @@
-from qgis.PyQt.QtCore import QAbstractItemModel, QModelIndex
+from qgis.PyQt.QtCore import QAbstractItemModel, QModelIndex, QUrl
+from qgis.PyQt.QtGui import QDesktopServices
 from qgis.PyQt.QtWidgets import (
     QDialog,
     QDialogButtonBox,
     QHBoxLayout,
     QLabel,
     QListWidgetItem,
+    QPushButton,
     QSizePolicy,
     QSplitter,
     QToolButton,
@@ -13,7 +15,13 @@ from qgis.PyQt.QtWidgets import (
 )
 from qgis.core import QgsBrowserModel
 
-from ..icons import add_separator_icon, layer_icon, qgis_icon, separator_icon
+from ..icons import (
+    add_separator_icon,
+    layer_icon,
+    qgis_icon,
+    separator_icon,
+    transparency_slider_icon,
+)
 from ..qt_compat import (
     QABSTRACT_ITEM_VIEW_EXTENDED_SELECTION,
     QABSTRACT_ITEM_VIEW_SINGLE_SELECTION,
@@ -28,6 +36,7 @@ from ..qt_compat import (
     set_header_section_resize_mode,
 )
 from ..storage import (
+    add_transparency_slider_enabled,
     is_separator,
     normalise_favourite,
     normalise_favourites,
@@ -36,8 +45,11 @@ from ..storage import (
 from .browser_delegate import BrowserLayerDelegate
 from .browser_model import BrowserLayerProxyModel
 from .browser_tree import BrowserLayerTreeView
-from .common import tr
+from .common import tr, transparency_slider_tooltip
 from .favourite_list import FavouriteListWidget
+
+
+HELP_URL = "https://github.com/suprun/favourite_layers/blob/main/README.md"
 
 
 class SettingsDialog(QDialog):
@@ -55,6 +67,7 @@ class SettingsDialog(QDialog):
         self.list_widget.favouritesDropped.connect(self._insert_favourites)
         self.list_widget.listAboutToChange.connect(self._push_undo_snapshot)
         self.list_widget.internalMoveFinished.connect(self._on_internal_move_finished)
+        self.list_widget.transparencySliderToggled.connect(self._update_buttons)
         self.list_widget.itemChanged.connect(self._update_item_name)
 
         self.browser_model = self._browser_model()
@@ -98,6 +111,12 @@ class SettingsDialog(QDialog):
             try:
                 model = getter()
                 if isinstance(model, QAbstractItemModel) and hasattr(model, "dataItem"):
+                    initialize = getattr(model, "initialize", None)
+                    if callable(initialize):
+                        try:
+                            initialize()
+                        except Exception:
+                            pass
                     return model
             except Exception:
                 pass
@@ -182,12 +201,21 @@ class SettingsDialog(QDialog):
 
         bottom_layout.addStretch(1)
 
+        self.help_button = QPushButton("{} ↗".format(tr("Help")), self)
+        self.help_button.setToolTip(HELP_URL)
+        self.help_button.clicked.connect(self._open_help)
+        bottom_layout.addWidget(self.help_button)
+        bottom_layout.addSpacing(16)
+
         buttons = QDialogButtonBox(QDIALOG_BUTTON_OK | QDIALOG_BUTTON_CANCEL)
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         bottom_layout.addWidget(buttons)
 
         main_layout.addLayout(bottom_layout)
+
+    def _open_help(self):
+        QDesktopServices.openUrl(QUrl(HELP_URL))
 
     def _on_theme_selected(self):
         action = self.sender()
@@ -255,6 +283,15 @@ class SettingsDialog(QDialog):
             tr("Rename selected menu item"),
             self._edit_selected,
         )
+        self.transparency_icon = transparency_slider_icon()
+        self.transparency_button = self._tool_button(
+            self.transparency_icon,
+            transparency_slider_tooltip(
+                tr("Add transparency slider when the layer is added")
+            ),
+            self._toggle_selected_transparency_slider,
+        )
+        self.transparency_button.setCheckable(True)
         self.undo_button = self._tool_button(
             qgis_icon("/mActionUndo.svg"),
             tr("Undo last menu list change"),
@@ -285,6 +322,7 @@ class SettingsDialog(QDialog):
             self.undo_button,
             self.separator_button,
             self.edit_button,
+            self.transparency_button,
             self.remove_button,
             self.up_button,
             self.down_button,
@@ -381,6 +419,12 @@ class SettingsDialog(QDialog):
             return
 
         self.list_widget.editItem(item)
+
+    def _toggle_selected_transparency_slider(self):
+        self.list_widget.setFocus()
+        self.list_widget.toggle_transparency_slider(
+            self.list_widget.currentIndex()
+        )
 
     def _update_item_name(self, item):
         if self._updating_list_item or self._restoring_undo:
@@ -535,6 +579,13 @@ class SettingsDialog(QDialog):
         selected_is_separator = bool(item and is_separator(item.data(QT_USER_ROLE)))
         self.undo_button.setEnabled(bool(self._undo_stack))
         self.edit_button.setEnabled(has_list_selection and not selected_is_separator)
+        has_selected_layer = has_list_selection and not selected_is_separator
+        self.transparency_button.setEnabled(has_selected_layer)
+        transparency_enabled = bool(
+            has_selected_layer
+            and add_transparency_slider_enabled(item.data(QT_USER_ROLE))
+        )
+        self.transparency_button.setChecked(transparency_enabled)
         self.remove_button.setEnabled(has_list_selection)
         self.up_button.setEnabled(row > 0)
         self.down_button.setEnabled(0 <= row < self.list_widget.count() - 1)

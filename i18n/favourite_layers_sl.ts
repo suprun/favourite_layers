@@ -227,5 +227,16 @@
             <source>Show button in Browser panel</source>
             <translation>Pokaži gumb na plošči brskalnika</translation>
         </message>
+        <message>
+            <location filename="../settings/dialog.py" line="274"/>
+            <location filename="../settings/favourite_list.py" line="331"/>
+            <source>Add transparency slider when the layer is added</source>
+            <translation>Dodaj drsnik prosojnosti ob dodajanju sloja</translation>
+        </message>
+        <message>
+            <location filename="../settings/dialog.py" line="204"/>
+            <source>Help</source>
+            <translation>Pomoč</translation>
+        </message>
     </context>
 </TS>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW 2020 (64-Bit) -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="19px" height="19px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 19 19"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str1 {stroke:#6BC6FF;stroke-width:2;stroke-miterlimit:22.9256}
+    .str0 {stroke:white;stroke-width:2;stroke-linecap:round;stroke-miterlimit:22.9256}
+    .fil3 {fill:none}
+    .fil1 {fill:black}
+    .fil0 {fill:white}
+    .fil4 {fill:#303030;fill-rule:nonzero}
+    .fil2 {fill:black;fill-rule:nonzero;fill-opacity:0.501961}
+   ]]>
+  </style>
+    <mask id="id0">
+  <linearGradient id="id1" gradientUnits="userSpaceOnUse" x1="15.645" y1="6.671" x2="2.447" y2="6.669">
+   <stop offset="0" style="stop-opacity:1; stop-color:white"/>
+   <stop offset="1" style="stop-opacity:0; stop-color:white"/>
+  </linearGradient>
+     <rect style="fill:url(#id1)" x="2.447" y="1.123" width="13.198" height="10.558"/>
+    </mask>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g>
+   <polygon class="fil0" style="mask:url(#id0)" points="2.447,1.123 15.645,1.123 15.645,11.681 2.447,11.681 "/>
+   <path id="1" class="fil1" d="M2.447 1.123l13.198 0 0 10.558 -13.198 0 0 -10.558zm13.197 0l-13.196 0 0 10.557 13.196 0 0 -10.557z"/>
+  </g>
+  <path class="fil2" d="M7.726 11.681l-2.639 0 0 -2.639 2.639 0 0 2.639zm5.279 0l-2.639 0 0 -2.639 2.639 0 0 2.639zm-7.918 -2.639l-2.64 0 0 -2.64 2.64 0 0 2.64zm5.279 0l-2.64 0 0 -2.64 2.64 0 0 2.64zm5.279 0l-2.64 0 0 -2.64 2.64 0 0 2.64zm-7.919 -2.64l-2.639 0 0 -2.639 2.639 0 0 2.639zm5.279 0l-2.639 0 0 -2.639 2.639 0 0 2.639zm-7.918 -2.639l-2.64 0 0 -2.64 2.64 0 0 2.64zm5.279 0l-2.64 0 0 -2.64 2.64 0 0 2.64zm5.279 0l-2.64 0 0 -2.64 2.64 0 0 2.64z"/>
+  <line class="fil3 str0" x1="1.03" y1="15.907" x2="17.03" y2= "15.907" />
+  <circle class="fil4 str1" cx="9.03" cy="15.907" r="2.2"/>
+ </g>
+</svg>

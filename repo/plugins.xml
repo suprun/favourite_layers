@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugins>
-  <pyqgis_plugin name="Favourite Layers" version="1.2.0">
+  <pyqgis_plugin name="Favourite Layers" version="1.3.0">
     <description><![CDATA[Quickly add favorite QGIS browser layers from a toolbar button or the Layer menu.]]></description>
     <about><![CDATA[Adds a custom toolbar button with a drop-down menu of your favorite layers and adds the same Favourite Layers submenu to the QGIS Layer menu. Layers can be added and reordered in the settings dialog. The list is stored in the current QGIS user profile.]]></about>
 
-    <version>1.2.0</version>
-    <changelog><![CDATA[What's new in version 1.2.0:
+    <version>1.3.0</version>
+    <changelog><![CDATA[What's new in version 1.3.0:
+- Added per-layer transparency slider toggles to the settings list and toolbar.
+- Added an embedded QGIS transparency slider when enabled for a favourite layer.
+- Kept favourites saved by earlier plugin versions compatible.
+- Fixed spurious default-style warnings when adding vector tile favourites.
+- Improved transparency toggle appearance and rename editing behaviour.
+- Fixed selection and missed rapid clicks on inline menu item buttons.
+- Added a Help button linking to the online documentation.
+- Added an illustrated tooltip for transparency slider toggles.
+- Added a green check mark to enabled inline transparency toggle icons.
+- Added the system text-selection cursor to the Source Information content.
+- Fixed Source Information context menu readability in the light theme.
+- Added translations for the transparency slider toggle.
+- Added an automated release script for the official QGIS Plugin Repository.
+
+What's new in version 1.2.1:
+- Fixed Favourite Layers panel remaining empty on startup until Browser panel is opened.
+
+What's new in version 1.2.0:
 - Added 37 translations covering all major QGIS interface languages.
 - Added custom plugin icon selection via dropdown menu with multiple colors (Default, Yellow, Orange, Lime, Jade, Violet, Pink).
 - Fixed minor bugs and improved overall stability.

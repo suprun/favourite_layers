@@ -31,6 +31,7 @@ class FavouriteLayersPlugin:
         self.translator = None
         self.favourites = []
         self.browser_buttons = []
+        self.connected_docks = set()
 
     def initGui(self):
         self._load_translator()
@@ -50,8 +51,26 @@ class FavouriteLayersPlugin:
         self._add_layer_menu()
         self._rebuild_menu()
         self._rebuild_browser_buttons()
+        self._connect_browser_docks()
+
+        try:
+            self.iface.initializationCompleted.connect(self._on_initialization_completed)
+        except Exception:
+            pass
 
     def unload(self):
+        try:
+            self.iface.initializationCompleted.disconnect(self._on_initialization_completed)
+        except Exception:
+            pass
+
+        for dock in list(self.connected_docks):
+            try:
+                dock.visibilityChanged.disconnect(self._on_browser_dock_visibility_changed)
+            except Exception:
+                pass
+        self.connected_docks.clear()
+
         self._clear_browser_buttons()
         self._remove_layer_menu()
 
@@ -280,3 +299,27 @@ class FavouriteLayersPlugin:
                 name=favourite.get("name") or favourite.get("uri")
             ),
         )
+
+    def _connect_browser_docks(self):
+        main_window = self.iface.mainWindow()
+        if main_window is None:
+            return
+
+        from qgis.PyQt.QtWidgets import QDockWidget
+        docks = main_window.findChildren(QDockWidget)
+        for dock in docks:
+            if dock.objectName() in ("Browser", "Browser2") or dock.metaObject().className() == "QgsBrowserDockWidget":
+                if dock not in self.connected_docks:
+                    try:
+                        dock.visibilityChanged.connect(self._on_browser_dock_visibility_changed)
+                        self.connected_docks.add(dock)
+                    except Exception:
+                        pass
+
+    def _on_browser_dock_visibility_changed(self, visible):
+        if visible:
+            self._rebuild_browser_buttons()
+
+    def _on_initialization_completed(self):
+        self._rebuild_browser_buttons()
+        self._connect_browser_docks()

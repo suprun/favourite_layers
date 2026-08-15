@@ -227,5 +227,16 @@
             <source>Show button in Browser panel</source>
             <translation>إظهار الزر في لوحة المتصفح</translation>
         </message>
+        <message>
+            <location filename="../settings/dialog.py" line="274"/>
+            <location filename="../settings/favourite_list.py" line="331"/>
+            <source>Add transparency slider when the layer is added</source>
+            <translation>إضافة شريط تمرير الشفافية عند إضافة الطبقة</translation>
+        </message>
+        <message>
+            <location filename="../settings/dialog.py" line="204"/>
+            <source>Help</source>
+            <translation>مساعدة</translation>
+        </message>
     </context>
 </TS>

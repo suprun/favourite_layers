@@ -227,5 +227,16 @@
             <source>Show button in Browser panel</source>
             <translation>Rodyti mygtuką naršyklės skydelyje</translation>
         </message>
+        <message>
+            <location filename="../settings/dialog.py" line="274"/>
+            <location filename="../settings/favourite_list.py" line="331"/>
+            <source>Add transparency slider when the layer is added</source>
+            <translation>Pridėti permatomumo slankiklį pridedant sluoksnį</translation>
+        </message>
+        <message>
+            <location filename="../settings/dialog.py" line="204"/>
+            <source>Help</source>
+            <translation>Žinynas</translation>
+        </message>
     </context>
 </TS>

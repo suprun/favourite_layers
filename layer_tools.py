@@ -1,7 +1,7 @@
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import QgsProject, QgsRasterLayer, QgsVectorLayer
 
-from .storage import is_separator
+from .storage import add_transparency_slider_enabled, is_separator
 
 try:
     from qgis.core import QgsMapLayerType
@@ -194,26 +194,60 @@ def add_favourite_to_project(favourite):
     return add_favourite_to_project_with_iface(favourite)
 
 
+def _add_transparency_slider(layer, iface=None):
+    try:
+        count = int(layer.customProperty("embeddedWidgets/count", 0) or 0)
+        for index in range(max(0, count)):
+            if layer.customProperty("embeddedWidgets/{}/id".format(index)) == (
+                "transparency"
+            ):
+                break
+        else:
+            count = max(0, count)
+            layer.setCustomProperty("embeddedWidgets/count", count + 1)
+            layer.setCustomProperty(
+                "embeddedWidgets/{}/id".format(count),
+                "transparency",
+            )
+    except Exception:
+        return
+
+    node = QgsProject.instance().layerTreeRoot().findLayer(layer.id())
+    if node is not None:
+        node.setExpanded(True)
+
+    if iface is None:
+        return
+    layer_tree_view = getattr(iface, "layerTreeView", None)
+    if not callable(layer_tree_view):
+        return
+    try:
+        refresh_layer = getattr(layer_tree_view(), "refreshLayerSymbology", None)
+        if callable(refresh_layer):
+            refresh_layer(layer.id())
+    except Exception:
+        pass
+
+
+def _load_vector_tile_default_style(layer):
+    try:
+        layer.loadDefaultStyle()
+    except Exception:
+        pass
+
+
 def add_favourite_to_project_with_iface(favourite, iface=None):
     if is_separator(favourite):
         return None
-
-    if _is_vector_tile_favourite(favourite) and iface is not None:
-        add_vector_tile_layer = getattr(iface, "addVectorTileLayer", None)
-        if callable(add_vector_tile_layer):
-            try:
-                layer = add_vector_tile_layer(
-                    favourite.get("uri") or "",
-                    favourite.get("name") or favourite.get("uri") or tr("Layer"),
-                )
-            except Exception:
-                layer = None
-            if layer and layer.isValid():
-                return layer
 
     layer = create_map_layer(favourite)
     if layer is None:
         return None
 
+    if _is_vector_tile_favourite(favourite):
+        _load_vector_tile_default_style(layer)
+
     QgsProject.instance().addMapLayer(layer)
+    if add_transparency_slider_enabled(favourite):
+        _add_transparency_slider(layer, iface)
     return layer

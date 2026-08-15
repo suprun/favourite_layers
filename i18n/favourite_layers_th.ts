@@ -227,5 +227,16 @@
             <source>Show button in Browser panel</source>
             <translation>แสดงปุ่มในแผงเบราว์เซอร์</translation>
         </message>
+        <message>
+            <location filename="../settings/dialog.py" line="274"/>
+            <location filename="../settings/favourite_list.py" line="331"/>
+            <source>Add transparency slider when the layer is added</source>
+            <translation>เพิ่มแถบเลื่อนความโปร่งใสเมื่อเพิ่มชั้นข้อมูล</translation>
+        </message>
+        <message>
+            <location filename="../settings/dialog.py" line="204"/>
+            <source>Help</source>
+            <translation>วิธีใช้</translation>
+        </message>
     </context>
 </TS>

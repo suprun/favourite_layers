@@ -35,6 +35,7 @@ def _object_enum(owner, enum_name, value_name):
 
 
 QT_LEFT_BUTTON = _qt_enum("MouseButton", "LeftButton")
+QT_IBEAM_CURSOR = _qt_enum("CursorShape", "IBeamCursor")
 QT_POINTING_HAND_CURSOR = _qt_enum("CursorShape", "PointingHandCursor")
 QT_FORBIDDEN_CURSOR = _qt_enum("CursorShape", "ForbiddenCursor")
 QT_COPY_ACTION = _qt_enum("DropAction", "CopyAction")

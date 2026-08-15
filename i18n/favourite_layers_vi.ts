@@ -227,5 +227,16 @@
             <source>Show button in Browser panel</source>
             <translation>Hiện nút trên bảng Trình duyệt</translation>
         </message>
+        <message>
+            <location filename="../settings/dialog.py" line="274"/>
+            <location filename="../settings/favourite_list.py" line="331"/>
+            <source>Add transparency slider when the layer is added</source>
+            <translation>Thêm thanh trượt độ trong suốt khi thêm lớp</translation>
+        </message>
+        <message>
+            <location filename="../settings/dialog.py" line="204"/>
+            <source>Help</source>
+            <translation>Trợ giúp</translation>
+        </message>
     </context>
 </TS>

@@ -1,8 +1,17 @@
 # Favourite Layers
 
-![Favourite Layers logo](icon.png)
+<p align="center">
+  <img src="icon.png" alt="logo" width="128">
+</p>
 
-QGIS plugin for quickly adding favorite Browser layers to the current project.
+<p align="center">
+  QGIS plugin for quickly adding favorite Browser layers to the current project.
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/QGIS-3.16%E2%80%934.x-589632?logo=qgis&logoColor=white" alt="QGIS 3.16–4.x">
+  <img src="https://img.shields.io/badge/category-Layers-blue" alt="Layers">
+</p>
 
 ## Supported Versions
 
@@ -19,6 +28,7 @@ QGIS plugin for quickly adding favorite Browser layers to the current project.
 - The last menu item opens the settings dialog.
 - Settings dialog has a menu list and a filtered QGIS Browser layer tree.
 - Layers can be added by the plus icon button or by dragging Browser layer items into the menu list.
+- Each favourite layer can add a transparency slider to the Layers panel when it is added to the map.
 - The favourite list is stored with `QgsSettings`, so every QGIS user profile keeps its own list.
 - If plugin settings are missing, a default OpenStreetMap XYZ tile layer is added to the menu.
 
@@ -42,6 +52,23 @@ After installation, the plugin adds:
 
 - a **Favourite Layers** toolbar button with a drop-down menu;
 - a **Favourite Layers** submenu in the QGIS **Layer** menu.
+
+## Transparency Slider
+
+![Transparency slider tooltip](tranparency.PNG)
+
+The transparency slider is configured separately for every favourite layer:
+
+1. Open the plugin settings.
+2. Select a layer in the menu list on the right.
+3. Enable **Add transparency slider when the layer is added** using either the
+   toggle button in the layer row or the matching toolbar button after
+   **Rename**.
+4. Save the settings and add the layer from the plugin menu.
+
+When enabled, the plugin adds the layer together with an embedded transparency
+slider in the QGIS **Layers** panel. The slider changes the layer opacity
+directly.
 
 ## Screenshots
 

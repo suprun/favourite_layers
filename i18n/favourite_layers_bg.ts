@@ -227,5 +227,16 @@
             <source>Show button in Browser panel</source>
             <translation>Показване на бутон в панела на браузъра</translation>
         </message>
+        <message>
+            <location filename="../settings/dialog.py" line="274"/>
+            <location filename="../settings/favourite_list.py" line="331"/>
+            <source>Add transparency slider when the layer is added</source>
+            <translation>Добавяне на плъзгач за прозрачност при добавяне на слоя</translation>
+        </message>
+        <message>
+            <location filename="../settings/dialog.py" line="204"/>
+            <source>Help</source>
+            <translation>Помощ</translation>
+        </message>
     </context>
 </TS>

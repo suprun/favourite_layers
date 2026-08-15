@@ -227,5 +227,16 @@
             <source>Show button in Browser panel</source>
             <translation>Mostra el botó al tauler del navegador</translation>
         </message>
+        <message>
+            <location filename="../settings/dialog.py" line="274"/>
+            <location filename="../settings/favourite_list.py" line="331"/>
+            <source>Add transparency slider when the layer is added</source>
+            <translation>Afegeix un control lliscant de transparència en afegir la capa</translation>
+        </message>
+        <message>
+            <location filename="../settings/dialog.py" line="204"/>
+            <source>Help</source>
+            <translation>Ajuda</translation>
+        </message>
     </context>
 </TS>

@@ -16,6 +16,11 @@ venv/
 env/
 ENV/
 
+# Local secrets
+.env
+.env.*
+!.env.example
+
 # Build and package artifacts
 build/
 dist/
@@ -50,3 +55,21 @@ AGENTS.md
 scripts/
 /plugins.xml
 /repo/restore.py
+
+# Translation sources and compiled catalogs
+/i18n/*.ts
+/i18n/*.qm
+!/i18n/favourite_layers_de.ts
+!/i18n/favourite_layers_de.qm
+!/i18n/favourite_layers_es.ts
+!/i18n/favourite_layers_es.qm
+!/i18n/favourite_layers_fr.ts
+!/i18n/favourite_layers_fr.qm
+!/i18n/favourite_layers_it.ts
+!/i18n/favourite_layers_it.qm
+!/i18n/favourite_layers_pt.ts
+!/i18n/favourite_layers_pt.qm
+!/i18n/favourite_layers_uk.ts
+!/i18n/favourite_layers_uk.qm
+!/i18n/favourite_layers_en.ts
+!/i18n/favourite_layers_en.qm

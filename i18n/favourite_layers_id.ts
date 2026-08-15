@@ -227,5 +227,16 @@
             <source>Show button in Browser panel</source>
             <translation>Tampilkan tombol di panel Peramban</translation>
         </message>
+        <message>
+            <location filename="../settings/dialog.py" line="274"/>
+            <location filename="../settings/favourite_list.py" line="331"/>
+            <source>Add transparency slider when the layer is added</source>
+            <translation>Tambahkan penggeser transparansi saat layer ditambahkan</translation>
+        </message>
+        <message>
+            <location filename="../settings/dialog.py" line="204"/>
+            <source>Help</source>
+            <translation>Bantuan</translation>
+        </message>
     </context>
 </TS>

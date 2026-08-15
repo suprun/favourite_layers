@@ -227,5 +227,16 @@
             <source>Show button in Browser panel</source>
             <translation>在瀏覽器面板中顯示按鈕</translation>
         </message>
+        <message>
+            <location filename="../settings/dialog.py" line="274"/>
+            <location filename="../settings/favourite_list.py" line="331"/>
+            <source>Add transparency slider when the layer is added</source>
+            <translation>加入圖層時新增透明度滑桿</translation>
+        </message>
+        <message>
+            <location filename="../settings/dialog.py" line="204"/>
+            <source>Help</source>
+            <translation>說明</translation>
+        </message>
     </context>
 </TS>

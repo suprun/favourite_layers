@@ -23,18 +23,27 @@ from ..qt_compat import (
     event_pos,
     exec_qt,
 )
-from ..storage import is_separator
-from .common import FAVOURITE_LAYER_MIME
+from ..storage import (
+    ADD_TRANSPARENCY_SLIDER_KEY,
+    add_transparency_slider_enabled,
+    is_separator,
+    normalise_favourite,
+)
+from .common import FAVOURITE_LAYER_MIME, tr, transparency_slider_tooltip
 
 
 class FavouriteListItemDelegate(QStyledItemDelegate):
     BUTTON_SIZE = 16
     BUTTON_MARGIN = 6
+    BUTTON_SPACING = 4
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        from ..icons import qgis_icon
+        from ..icons import qgis_icon, transparency_slider_icon
+
         self.info_icon = qgis_icon("/mActionPropertiesWidget.svg")
+        self.transparency_icon = transparency_slider_icon()
+        self.transparency_checked_icon = transparency_slider_icon(checked=True)
 
     @classmethod
     def info_button_rect(cls, row_rect):
@@ -45,8 +54,26 @@ class FavouriteListItemDelegate(QStyledItemDelegate):
         return QRect(left, top, cls.BUTTON_SIZE, cls.BUTTON_SIZE)
 
     @classmethod
+    def transparency_button_rect(cls, row_rect):
+        if not row_rect.isValid():
+            return QRect()
+        right = (
+            row_rect.right()
+            - cls.BUTTON_MARGIN
+            - cls.BUTTON_SIZE
+            - cls.BUTTON_SPACING
+        )
+        left = right - cls.BUTTON_SIZE + 1
+        top = row_rect.top() + int((row_rect.height() - cls.BUTTON_SIZE) / 2)
+        return QRect(left, top, cls.BUTTON_SIZE, cls.BUTTON_SIZE)
+
+    @classmethod
     def reserved_width(cls):
-        return cls.BUTTON_SIZE + (cls.BUTTON_MARGIN * 2)
+        return (
+            (cls.BUTTON_SIZE * 2)
+            + cls.BUTTON_SPACING
+            + (cls.BUTTON_MARGIN * 2)
+        )
 
     def paint(self, painter, option, index):
         favourite = index.data(QT_USER_ROLE)
@@ -74,8 +101,35 @@ class FavouriteListItemDelegate(QStyledItemDelegate):
         text_option.rect = option.rect.adjusted(0, 0, -self.reserved_width(), 0)
         super().paint(painter, text_option, index)
 
-        button_rect = self.info_button_rect(option.rect)
-        self.info_icon.paint(painter, button_rect, QT_ALIGN_CENTER)
+        transparency_rect = self.transparency_button_rect(option.rect)
+        enabled = add_transparency_slider_enabled(favourite)
+        if enabled:
+            painter.save()
+            highlight = option.palette.highlight().color()
+            background = highlight
+            background.setAlpha(70)
+            painter.setPen(highlight)
+            painter.setBrush(background)
+            painter.drawRoundedRect(
+                transparency_rect.adjusted(0, 0, -1, -1),
+                2,
+                2,
+            )
+            painter.restore()
+
+        painter.save()
+        transparency_icon = (
+            self.transparency_checked_icon if enabled else self.transparency_icon
+        )
+        transparency_icon.paint(
+            painter,
+            transparency_rect.adjusted(1, 1, -1, -1),
+            QT_ALIGN_CENTER,
+        )
+        painter.restore()
+
+        info_rect = self.info_button_rect(option.rect)
+        self.info_icon.paint(painter, info_rect, QT_ALIGN_CENTER)
 
     def createEditor(self, parent, option, index):
         editor = super().createEditor(parent, option, index)
@@ -90,10 +144,12 @@ class FavouriteListWidget(QListWidget):
     favouritesDropped = pyqtSignal(list, int)
     listAboutToChange = pyqtSignal()
     internalMoveFinished = pyqtSignal(bool)
+    transparencySliderToggled = pyqtSignal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self._external_drop_row = None
+        self._pressed_item_button = None
         self.setItemDelegate(FavouriteListItemDelegate(self))
         self.setAcceptDrops(True)
         self.setDragEnabled(True)
@@ -217,17 +273,48 @@ class FavouriteListWidget(QListWidget):
         self._external_drop_row = None
         self.viewport().update()
 
-    def mouseReleaseEvent(self, event):
+    def mousePressEvent(self, event):
         if event.button() == QT_LEFT_BUTTON:
-            index = self._info_button_index_at(event_pos(event))
+            button_name, index = self._item_button_at(event_pos(event))
             if index.isValid():
-                self._show_layer_info(index)
+                if button_name == "transparency":
+                    self.setCurrentIndex(index)
+                self._pressed_item_button = (button_name, index.row())
                 event.accept()
                 return
+        self._pressed_item_button = None
+        super().mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        if event.button() == QT_LEFT_BUTTON and self._pressed_item_button:
+            button_name, row = self._pressed_item_button
+            self._pressed_item_button = None
+            released_button, index = self._item_button_at(event_pos(event))
+            if (
+                index.isValid()
+                and index.row() == row
+                and released_button == button_name
+            ):
+                if button_name == "transparency":
+                    self.toggle_transparency_slider(index)
+                else:
+                    self._show_layer_info(index)
+            event.accept()
+            return
         super().mouseReleaseEvent(event)
 
+    def mouseDoubleClickEvent(self, event):
+        if event.button() == QT_LEFT_BUTTON:
+            button_name, index = self._item_button_at(event_pos(event))
+            if button_name and index.isValid():
+                self._pressed_item_button = (button_name, index.row())
+                event.accept()
+                return
+        super().mouseDoubleClickEvent(event)
+
     def mouseMoveEvent(self, event):
-        if self._info_button_index_at(event_pos(event)).isValid():
+        button_name, index = self._item_button_at(event_pos(event))
+        if button_name and index.isValid():
             self.viewport().setCursor(QT_POINTING_HAND_CURSOR)
         else:
             self.viewport().unsetCursor()
@@ -240,31 +327,40 @@ class FavouriteListWidget(QListWidget):
     def viewportEvent(self, event):
         if event.type() == QT_TOOLTIP_EVENT:
             pos = event_pos(event)
-            index = self._info_button_index_at(pos)
+            button_name, index = self._item_button_at(pos)
             if index.isValid():
-                from .common import tr
+                if button_name == "transparency":
+                    tooltip = transparency_slider_tooltip(
+                        tr("Add transparency slider when the layer is added")
+                    )
+                    rect = self._transparency_button_rect(index)
+                else:
+                    tooltip = tr("Show layer properties")
+                    rect = self._info_button_rect(index)
                 QToolTip.showText(
                     event_global_pos(event),
-                    tr("Show layer properties"),
+                    tooltip,
                     self.viewport(),
-                    self._info_button_rect(index),
+                    rect,
                 )
                 return True
             QToolTip.hideText()
         return super().viewportEvent(event)
 
-    def _info_button_index_at(self, pos):
+    def _item_button_at(self, pos):
         index = self.indexAt(pos)
         if not index.isValid():
-            return QModelIndex()
+            return None, QModelIndex()
 
         favourite = index.data(QT_USER_ROLE)
         if not favourite or is_separator(favourite):
-            return QModelIndex()
+            return None, QModelIndex()
 
-        if not self._info_button_rect(index).contains(pos):
-            return QModelIndex()
-        return index
+        if self._transparency_button_rect(index).contains(pos):
+            return "transparency", index
+        if self._info_button_rect(index).contains(pos):
+            return "info", index
+        return None, QModelIndex()
 
     def _info_button_rect(self, index):
         delegate = self.itemDelegate()
@@ -272,6 +368,33 @@ class FavouriteListWidget(QListWidget):
         if delegate and hasattr(delegate, "info_button_rect"):
             return delegate.info_button_rect(rect)
         return QRect()
+
+    def _transparency_button_rect(self, index):
+        delegate = self.itemDelegate()
+        rect = self.visualRect(index)
+        if delegate and hasattr(delegate, "transparency_button_rect"):
+            return delegate.transparency_button_rect(rect)
+        return QRect()
+
+    def toggle_transparency_slider(self, index):
+        if not index.isValid():
+            return
+
+        item = self.item(index.row())
+        if item is None:
+            return
+
+        favourite = normalise_favourite(item.data(QT_USER_ROLE))
+        if is_separator(favourite):
+            return
+
+        self.listAboutToChange.emit()
+        favourite[ADD_TRANSPARENCY_SLIDER_KEY] = (
+            not add_transparency_slider_enabled(favourite)
+        )
+        item.setData(QT_USER_ROLE, favourite)
+        self.viewport().update(self.visualRect(index))
+        self.transparencySliderToggled.emit()
 
     def _show_layer_info(self, index):
         favourite = index.data(QT_USER_ROLE)

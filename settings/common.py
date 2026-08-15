@@ -1,6 +1,9 @@
-from qgis.PyQt.QtCore import QCoreApplication
+from html import escape
+from pathlib import Path
+
+from qgis.PyQt.QtCore import QCoreApplication, QUrl
 from qgis.PyQt.QtWidgets import QDialog, QVBoxLayout, QTextBrowser, QDialogButtonBox
-from ..qt_compat import QDIALOG_BUTTON_OK
+from ..qt_compat import QDIALOG_BUTTON_OK, QT_IBEAM_CURSOR
 
 PLUGIN_CONTEXT = "FavouriteLayers"
 FAVOURITE_LAYER_MIME = "application/x-qgis-favourite-layer"
@@ -8,6 +11,22 @@ FAVOURITE_LAYER_MIME = "application/x-qgis-favourite-layer"
 
 def tr(message):
     return QCoreApplication.translate(PLUGIN_CONTEXT, message)
+
+
+def transparency_slider_tooltip(caption):
+    image_path = Path(__file__).resolve().parent.parent / "tranparency.PNG"
+    image_url = QUrl.fromLocalFile(str(image_path)).toString()
+    return (
+        '<table cellspacing="0" cellpadding="2">'
+        '<tr><td align="center">'
+        '<img src="{image_url}" width="360" height="83">'
+        "</td></tr>"
+        '<tr><td align="center">{caption}</td></tr>'
+        "</table>"
+    ).format(
+        image_url=escape(image_url, quote=True),
+        caption=escape(caption),
+    )
 
 
 class SourceInfoDialog(QDialog):
@@ -20,7 +39,10 @@ class SourceInfoDialog(QDialog):
 
         self.text_browser = QTextBrowser(self)
         self.text_browser.setOpenExternalLinks(True)
-        self.text_browser.setStyleSheet("background: transparent; border: none;")
+        self.text_browser.viewport().setCursor(QT_IBEAM_CURSOR)
+        self.text_browser.setStyleSheet(
+            "QTextBrowser { background: transparent; border: none; }"
+        )
 
         name = favourite.get("name") or favourite.get("uri") or tr("Unknown")
         uri = favourite.get("uri") or ""

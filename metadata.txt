@@ -2,11 +2,20 @@
 name=Favourite Layers
 description=Quickly add favorite QGIS browser layers from a toolbar button or the Layer menu.
 about=Adds a custom toolbar button with a drop-down menu of your favorite layers and adds the same Favourite Layers submenu to the QGIS Layer menu. Layers can be added and reordered in the settings dialog. The list is stored in the current QGIS user profile.
-version=1.2.0
-changelog=What's new in version 1.2.0:
-    - Added 37 translations covering all major QGIS interface languages.
-    - Added custom plugin icon selection via dropdown menu with multiple colors (Default, Yellow, Orange, Lime, Jade, Violet, Pink)
+version=1.3.0
+changelog=What's new in version 1.3.0:
+    - Added an embedded QGIS transparency slider when enabled for a favourite layer.
+    - Added per-layer transparency slider toggles to the settings list and toolbar and kept favourites saved by earlier plugin versions compatible.
+    - Added an illustrated tooltip for transparency slider toggles.
+    - Fixed spurious default-style warnings when adding vector tile favourites.
+    - Fixed selection and missed rapid clicks on inline menu item buttons.
+    - Added a Help button linking to the online documentation.
+    - Fixed Source Information context menu readability in the light theme.
+  What's new in version 1.2.0:
     - Fixed minor bugs and improved overall stability.
+    - Fixed silent exception swallowing vulnerabilities across codebase.
+    - Fixed Favourite Layers panel remaining empty on startup until Browser panel is opened.
+    - Added custom plugin icon selection via dropdown menu with multiple colors (Default, Yellow, Orange, Lime, Jade, Violet, Pink)
   What's new in version 1.1.0:
     - Added 'i' (Information) button to view detailed layer source
     properties.

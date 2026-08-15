@@ -227,5 +227,16 @@
             <source>Show button in Browser panel</source>
             <translation>Visa knapp i webbläsarpanelen</translation>
         </message>
+        <message>
+            <location filename="../settings/dialog.py" line="274"/>
+            <location filename="../settings/favourite_list.py" line="331"/>
+            <source>Add transparency slider when the layer is added</source>
+            <translation>Lägg till transparensreglage när lagret läggs till</translation>
+        </message>
+        <message>
+            <location filename="../settings/dialog.py" line="204"/>
+            <source>Help</source>
+            <translation>Hjälp</translation>
+        </message>
     </context>
 </TS>

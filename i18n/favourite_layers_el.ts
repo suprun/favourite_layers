@@ -227,5 +227,16 @@
             <source>Show button in Browser panel</source>
             <translation>Εμφάνιση κουμπιού στον πίνακα του Περιηγητή</translation>
         </message>
+        <message>
+            <location filename="../settings/dialog.py" line="274"/>
+            <location filename="../settings/favourite_list.py" line="331"/>
+            <source>Add transparency slider when the layer is added</source>
+            <translation>Προσθήκη ρυθμιστικού διαφάνειας κατά την προσθήκη του επιπέδου</translation>
+        </message>
+        <message>
+            <location filename="../settings/dialog.py" line="204"/>
+            <source>Help</source>
+            <translation>Βοήθεια</translation>
+        </message>
     </context>
 </TS>

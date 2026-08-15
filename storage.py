@@ -6,6 +6,7 @@ from qgis.core import QgsSettings
 SETTINGS_KEY = "favourite_layers/items"
 ITEM_TYPE_LAYER = "layer"
 ITEM_TYPE_SEPARATOR = "separator"
+ADD_TRANSPARENCY_SLIDER_KEY = "add_transparency_slider"
 DEFAULT_OSM_TILE_URL = "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
 DEFAULT_FAVOURITES = (
     {
@@ -16,6 +17,7 @@ DEFAULT_FAVOURITES = (
         "layer_type": "RasterLayer",
         "path": DEFAULT_OSM_TILE_URL,
         "icon_name": "",
+        ADD_TRANSPARENCY_SLIDER_KEY: False,
     },
 )
 
@@ -36,6 +38,13 @@ def separator_item():
     }
 
 
+def add_transparency_slider_enabled(item):
+    value = (item or {}).get(ADD_TRANSPARENCY_SLIDER_KEY, False)
+    if isinstance(value, str):
+        return value.strip().lower() in ("1", "true", "yes", "on")
+    return bool(value)
+
+
 def normalise_favourite(item):
     item = item or {}
     if is_separator(item):
@@ -49,6 +58,7 @@ def normalise_favourite(item):
         "layer_type": str(item.get("layer_type") or ""),
         "path": str(item.get("path") or ""),
         "icon_name": str(item.get("icon_name") or ""),
+        ADD_TRANSPARENCY_SLIDER_KEY: add_transparency_slider_enabled(item),
     }
 
 

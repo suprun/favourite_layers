@@ -227,5 +227,16 @@
             <source>Show button in Browser panel</source>
             <translation>탐색기 패널에 버튼 표시</translation>
         </message>
+        <message>
+            <location filename="../settings/dialog.py" line="274"/>
+            <location filename="../settings/favourite_list.py" line="331"/>
+            <source>Add transparency slider when the layer is added</source>
+            <translation>레이어를 추가할 때 투명도 슬라이더 추가</translation>
+        </message>
+        <message>
+            <location filename="../settings/dialog.py" line="204"/>
+            <source>Help</source>
+            <translation>도움말</translation>
+        </message>
     </context>
 </TS>

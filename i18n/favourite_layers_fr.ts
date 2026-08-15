@@ -227,5 +227,16 @@
             <source>Show button in Browser panel</source>
             <translation>Afficher le bouton dans le panneau de l'Explorateur</translation>
         </message>
+        <message>
+            <location filename="../settings/dialog.py" line="274"/>
+            <location filename="../settings/favourite_list.py" line="331"/>
+            <source>Add transparency slider when the layer is added</source>
+            <translation>Ajouter un curseur de transparence lors de l’ajout de la couche</translation>
+        </message>
+        <message>
+            <location filename="../settings/dialog.py" line="204"/>
+            <source>Help</source>
+            <translation>Aide</translation>
+        </message>
     </context>
 </TS>
