@@ -86,6 +86,9 @@ class _FastToolTipButton(QToolButton):
 
 
 class SettingsDialog(QDialog):
+    BROWSER_PANEL_MINIMUM_WIDTH = 240
+    MENU_PANEL_EXTRA_EMS = 4
+
     def __init__(self, iface, favourites, parent=None):
         super().__init__(parent)
         self.iface = iface
@@ -170,6 +173,7 @@ class SettingsDialog(QDialog):
         splitter = QSplitter(QT_HORIZONTAL, self)
 
         browser_panel = QWidget(splitter)
+        browser_panel.setMinimumWidth(self.BROWSER_PANEL_MINIMUM_WIDTH)
         browser_layout = QVBoxLayout(browser_panel)
         browser_layout.setContentsMargins(0, 0, 0, 0)
         browser_layout.addLayout(self._browser_toolbar())
@@ -178,11 +182,18 @@ class SettingsDialog(QDialog):
         menu_panel = QWidget(splitter)
         menu_layout = QVBoxLayout(menu_panel)
         menu_layout.setContentsMargins(0, 0, 0, 0)
-        menu_layout.addLayout(self._menu_list_toolbar())
+        menu_toolbar = self._menu_list_toolbar()
+        menu_layout.addLayout(menu_toolbar)
         menu_layout.addWidget(self.list_widget)
+        menu_panel.setMinimumWidth(
+            self._menu_panel_minimum_width(menu_toolbar)
+        )
 
         splitter.addWidget(browser_panel)
         splitter.addWidget(menu_panel)
+        splitter.setChildrenCollapsible(False)
+        splitter.setCollapsible(0, False)
+        splitter.setCollapsible(1, False)
         splitter.setStretchFactor(0, 2)
         splitter.setStretchFactor(1, 1)
         main_layout.addWidget(splitter, 1)
@@ -248,6 +259,36 @@ class SettingsDialog(QDialog):
         bottom_layout.addWidget(buttons)
 
         main_layout.addLayout(bottom_layout)
+
+    def _menu_panel_minimum_width(self, toolbar_layout):
+        buttons = [
+            toolbar_layout.itemAt(index).widget()
+            for index in range(toolbar_layout.count())
+            if toolbar_layout.itemAt(index).widget() is not None
+        ]
+        font_metrics = self.fontMetrics()
+        minimum_button_width = (
+            font_metrics.height() + font_metrics.height() // 2
+        )
+        buttons_width = sum(
+            max(button.sizeHint().width(), minimum_button_width)
+            for button in buttons
+        )
+        button_spacing = max(
+            toolbar_layout.spacing(),
+            font_metrics.height() // 3,
+        )
+        margins = toolbar_layout.contentsMargins()
+        extra_width = font_metrics.horizontalAdvance(
+            "M" * self.MENU_PANEL_EXTRA_EMS
+        )
+        return (
+            buttons_width
+            + button_spacing * max(0, len(buttons) - 1)
+            + margins.left()
+            + margins.right()
+            + extra_width
+        )
 
     def _open_help(self):
         QDesktopServices.openUrl(QUrl(HELP_URL))

@@ -2,8 +2,18 @@
 name=Favourite Layers
 description=Quickly add favorite QGIS browser layers from a toolbar button or the Layer menu.
 about=Adds a custom toolbar button with a drop-down menu of your favorite layers and adds the same Favourite Layers submenu to the QGIS Layer menu. Layers can be added and reordered in the settings dialog. The list is stored in the current QGIS user profile.
-version=1.3.0
-changelog=What's new in version 1.3.0:
+version=1.3.1
+changelog=What's new in version 1.3.1:
+    - Prevented settings splitter panels from collapsing and sized the right minimum from its font and toolbar controls.
+    - Added translations for AR (Arabic), BG (Bulgarian), CA (Catalan),
+    CS (Czech), DA (Danish), EL (Greek), ET (Estonian), FI (Finnish),
+    HR (Croatian), HU (Hungarian), ID (Indonesian), JA (Japanese),
+    KO (Korean), LT (Lithuanian), LV (Latvian), NB (Norwegian Bokmål),
+    NL (Dutch), PL (Polish), PT_BR (Brazilian Portuguese), RO (Romanian),
+    RU (Russian), SK (Slovak), SL (Slovenian), SR (Serbian), SV (Swedish),
+    TH (Thai), TR (Turkish), VI (Vietnamese), ZH_CN (Simplified Chinese),
+    and ZH_TW (Traditional Chinese).
+  What's new in version 1.3.0:
     - Added an embedded QGIS transparency slider when enabled for a favourite layer.
     - Added per-layer transparency slider toggles to the settings list and toolbar and kept favourites saved by earlier plugin versions compatible.
     - Added an illustrated tooltip for transparency slider toggles.
@@ -24,7 +34,8 @@ changelog=What's new in version 1.3.0:
     properties.
     - Added custom plugin icon selection in the settings dialog (adaptive
     Default theme or Yellow icon).
-    - Added multi-language support for DE, ES, FR, IT, PT, UK, and EN.
+    - Added multi-language support for DE (German), ES (Spanish), FR (French),
+    IT (Italian), PT (Portuguese), UK (Ukrainian), and EN (English).
     - Fixed minor bugs and improved overall stability.
 qgisMinimumVersion=3.16
 qgisMaximumVersion=4.99
