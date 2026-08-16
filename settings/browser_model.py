@@ -1,6 +1,11 @@
+import logging
+
 from qgis.PyQt.QtCore import QSortFilterProxyModel
 
 from .browser_items import browser_item_to_favourite, is_layer_item
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 class BrowserLayerProxyModel(QSortFilterProxyModel):
@@ -36,26 +41,26 @@ class BrowserLayerProxyModel(QSortFilterProxyModel):
             if source_model.canFetchMore(source_index):
                 return True
         except Exception:
-            pass
+            LOGGER.debug("Could not query whether the Browser model can fetch more")
 
         try:
             if source_model.hasChildren(source_index):
                 return True
         except Exception:
-            pass
+            LOGGER.debug("Could not query Browser model children")
 
         try:
             if source_model.rowCount(source_index) > 0:
                 return True
         except Exception:
-            pass
+            LOGGER.debug("Could not query the Browser model row count")
 
         item = source_model.dataItem(source_index)
         try:
             if item and item.hasChildren():
                 return True
         except Exception:
-            pass
+            LOGGER.debug("Could not query Browser item children")
 
         return False
 

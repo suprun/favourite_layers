@@ -1,4 +1,5 @@
 import json
+import logging
 
 from qgis.core import QgsSettings
 
@@ -20,6 +21,7 @@ DEFAULT_FAVOURITES = (
         ADD_TRANSPARENCY_SLIDER_KEY: False,
     },
 )
+LOGGER = logging.getLogger(__name__)
 
 
 def is_separator(item):
@@ -126,13 +128,13 @@ class FavouriteLayerStore:
             try:
                 return bool(contains(SETTINGS_KEY))
             except TypeError:
-                pass
+                LOGGER.debug("QgsSettings.contains rejected the settings key")
 
         all_keys = getattr(self.settings, "allKeys", None)
         if callable(all_keys):
             try:
                 return SETTINGS_KEY in all_keys()
             except Exception:
-                pass
+                LOGGER.debug("Could not enumerate QgsSettings keys")
 
         return self.settings.value(SETTINGS_KEY, None) is not None

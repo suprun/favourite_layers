@@ -1,3 +1,4 @@
+import logging
 import os
 
 from qgis.PyQt.QtCore import QCoreApplication, QLocale, QTranslator
@@ -11,6 +12,7 @@ from .storage import FavouriteLayerStore, is_separator
 
 
 PLUGIN_CONTEXT = "FavouriteLayers"
+LOGGER = logging.getLogger(__name__)
 
 
 def tr(message):
@@ -55,20 +57,20 @@ class FavouriteLayersPlugin:
 
         try:
             self.iface.initializationCompleted.connect(self._on_initialization_completed)
-        except Exception:
-            pass
+        except (AttributeError, RuntimeError, TypeError):
+            LOGGER.debug("Could not connect the QGIS initialization signal")
 
     def unload(self):
         try:
             self.iface.initializationCompleted.disconnect(self._on_initialization_completed)
-        except Exception:
-            pass
+        except (AttributeError, RuntimeError, TypeError):
+            LOGGER.debug("Could not disconnect the QGIS initialization signal")
 
         for dock in list(self.connected_docks):
             try:
                 dock.visibilityChanged.disconnect(self._on_browser_dock_visibility_changed)
-            except Exception:
-                pass
+            except (AttributeError, RuntimeError, TypeError):
+                LOGGER.debug("Could not disconnect a Browser dock signal")
         self.connected_docks.clear()
 
         self._clear_browser_buttons()
@@ -89,8 +91,8 @@ class FavouriteLayersPlugin:
         if self.toolbar_action is not None and self.toolbar is not None:
             try:
                 self.toolbar.removeAction(self.toolbar_action)
-            except Exception:
-                pass
+            except (AttributeError, RuntimeError, TypeError):
+                LOGGER.debug("Could not remove the main toolbar action")
             self.toolbar_action.deleteLater()
             self.toolbar_action = None
 
@@ -98,15 +100,15 @@ class FavouriteLayersPlugin:
             try:
                 self.tool_button.setParent(None)
                 self.tool_button.deleteLater()
-            except Exception:
-                pass
+            except (AttributeError, RuntimeError, TypeError):
+                LOGGER.debug("Could not dispose of the main toolbar button")
             self.tool_button = None
 
         if self.toolbar is not None:
             try:
                 self.iface.mainWindow().removeToolBar(self.toolbar)
-            except Exception:
-                pass
+            except (AttributeError, RuntimeError, TypeError):
+                LOGGER.debug("Could not detach the plugin toolbar")
             self.toolbar.clear()
             self.toolbar.setParent(None)
             self.toolbar.deleteLater()
@@ -135,8 +137,8 @@ class FavouriteLayersPlugin:
         if qgis_layer_menu is not None:
             try:
                 qgis_layer_menu.removeAction(self.layer_menu_action)
-            except Exception:
-                pass
+            except (AttributeError, RuntimeError, TypeError):
+                LOGGER.debug("Could not remove the plugin submenu")
         self.layer_menu_action = None
 
     def _qgis_layer_menu(self):
@@ -147,7 +149,7 @@ class FavouriteLayersPlugin:
                 if layer_menu is not None:
                     return layer_menu
             except Exception:
-                pass
+                LOGGER.debug("Could not obtain the QGIS Layer menu")
 
         menu_bar = self.iface.mainWindow().menuBar()
         for action in menu_bar.actions():
@@ -171,7 +173,7 @@ class FavouriteLayersPlugin:
             if user_locale:
                 locale = str(user_locale)
         except Exception:
-            pass
+            LOGGER.debug("Could not read the QGIS user locale")
 
         locale_candidates = []
         if locale:
@@ -196,17 +198,17 @@ class FavouriteLayersPlugin:
             try:
                 if toolbar is not None:
                     toolbar.removeAction(action)
-            except Exception:
-                pass
+            except (AttributeError, RuntimeError, TypeError):
+                LOGGER.debug("Could not remove a Browser toolbar action")
             try:
                 tool_button.setParent(None)
                 tool_button.deleteLater()
-            except Exception:
-                pass
+            except (AttributeError, RuntimeError, TypeError):
+                LOGGER.debug("Could not dispose of a Browser toolbar button")
             try:
                 action.deleteLater()
-            except Exception:
-                pass
+            except (AttributeError, RuntimeError, TypeError):
+                LOGGER.debug("Could not dispose of a Browser toolbar action")
         self.browser_buttons.clear()
 
     def _rebuild_browser_buttons(self):
@@ -313,8 +315,8 @@ class FavouriteLayersPlugin:
                     try:
                         dock.visibilityChanged.connect(self._on_browser_dock_visibility_changed)
                         self.connected_docks.add(dock)
-                    except Exception:
-                        pass
+                    except (AttributeError, RuntimeError, TypeError):
+                        LOGGER.debug("Could not connect a Browser dock signal")
 
     def _on_browser_dock_visibility_changed(self, visible):
         if visible:

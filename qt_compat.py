@@ -77,7 +77,12 @@ def exec_qt(obj, *args):
     method = getattr(obj, "exec", None)
     if callable(method):
         return method(*args)
-    return obj.exec_(*args)
+
+    legacy_method = getattr(obj, "exec_", None)
+    if callable(legacy_method):
+        return legacy_method(*args)
+
+    raise AttributeError("Object provides neither exec nor the Qt5 fallback")
 
 
 def event_pos(event):

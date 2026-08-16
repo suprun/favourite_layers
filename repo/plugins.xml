@@ -17,6 +17,8 @@
 - Added a green check mark to enabled inline transparency toggle icons.
 - Added the system text-selection cursor to the Source Information content.
 - Fixed Source Information context menu readability in the light theme.
+- Replaced silent exception handling with narrow QGIS/Qt fallbacks and safe diagnostics.
+- Fixed the Qt6 compatibility warning for the legacy Qt5 dialog execution fallback.
 - Added translations for the transparency slider toggle.
 - Added an automated release script for the official QGIS Plugin Repository.
 

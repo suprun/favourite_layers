@@ -1,3 +1,5 @@
+import logging
+
 from qgis.PyQt.QtCore import QAbstractItemModel, QModelIndex, QUrl
 from qgis.PyQt.QtGui import QDesktopServices
 from qgis.PyQt.QtWidgets import (
@@ -50,6 +52,7 @@ from .favourite_list import FavouriteListWidget
 
 
 HELP_URL = "https://github.com/suprun/favourite_layers/blob/main/README.md"
+LOGGER = logging.getLogger(__name__)
 
 
 class SettingsDialog(QDialog):
@@ -116,16 +119,18 @@ class SettingsDialog(QDialog):
                         try:
                             initialize()
                         except Exception:
-                            pass
+                            LOGGER.debug(
+                                "Could not initialize the shared Browser model"
+                            )
                     return model
             except Exception:
-                pass
+                LOGGER.debug("Could not obtain the shared Browser model")
 
         model = QgsBrowserModel(self)
         try:
             model.initialize()
         except Exception:
-            pass
+            LOGGER.debug("Could not initialize the fallback Browser model")
         return model
 
     def _build_layout(self):
@@ -498,7 +503,7 @@ class SettingsDialog(QDialog):
             while self.browser_model.canFetchMore(source_index):
                 self.browser_model.fetchMore(source_index)
         except Exception:
-            pass
+            LOGGER.debug("Could not fetch additional Browser model rows")
 
     def _refresh_browser(self):
         refreshed = False
@@ -516,15 +521,15 @@ class SettingsDialog(QDialog):
                     refreshed = True
                     break
                 except Exception:
-                    pass
+                    LOGGER.debug("Could not refresh the Browser model with an index")
             except Exception:
-                pass
+                LOGGER.debug("Could not refresh the Browser model")
 
         if not refreshed and isinstance(self.browser_model, QgsBrowserModel):
             try:
                 self.browser_model.initialize()
             except Exception:
-                pass
+                LOGGER.debug("Could not reinitialize the Browser model")
 
         self.proxy_model.invalidateFilter()
 

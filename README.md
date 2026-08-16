@@ -1,7 +1,7 @@
 # Favourite Layers
 
 <p align="center">
-  <img src="icon.png" alt="logo" width="128">
+  <img src="icon.png" alt="logo" width="96">
 </p>
 
 <p align="center">

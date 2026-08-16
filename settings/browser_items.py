@@ -1,3 +1,5 @@
+import logging
+
 from qgis.PyQt.QtCore import QModelIndex
 from qgis.core import QgsDataItem
 
@@ -5,16 +7,19 @@ from ..qt_compat import QT_DISPLAY_ROLE
 
 try:
     from qgis.core import Qgis
-except Exception:
+except ImportError:
     Qgis = None
 
 try:
     from qgis.core import QgsLayerItem
-except Exception:
+except ImportError:
     QgsLayerItem = None
 
 from ..layer_tools import layer_type_to_name
 from ..storage import normalise_favourite
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 def _safe_call(obj, method_name, default=""):
@@ -24,6 +29,7 @@ def _safe_call(obj, method_name, default=""):
     try:
         value = method()
     except Exception:
+        LOGGER.debug("Could not read a Browser item property")
         return default
     if value is None:
         return default
@@ -46,8 +52,8 @@ def _enum_name(value, enum_owner=None, aliases=None):
                 enum_value = getattr(enum_owner, name)
                 if int(enum_value) == int(value):
                     return aliases.get(name, name)
-            except Exception:
-                continue
+            except (TypeError, ValueError, OverflowError):
+                LOGGER.debug("Could not compare a Browser item enum value")
 
     name = str(value).split(".")[-1]
     return aliases.get(name, name)
@@ -157,9 +163,11 @@ def mime_uri_to_favourite(item, model=None, index=QModelIndex()):
         is_valid = getattr(mime_uri, "isValid", None)
         if callable(is_valid):
             try:
-                if not is_valid():
-                    continue
+                mime_uri_is_valid = bool(is_valid())
             except Exception:
+                LOGGER.debug("Could not validate a Browser MIME URI")
+                mime_uri_is_valid = False
+            if not mime_uri_is_valid:
                 continue
 
         uri = str(getattr(mime_uri, "uri", "") or "")
@@ -208,8 +216,8 @@ def browser_layer_type_to_name(item):
             try:
                 if int(getattr(enum_owner, enum_name)) == int(layer_type):
                     return value_name
-            except Exception:
-                continue
+            except (TypeError, ValueError, OverflowError):
+                LOGGER.debug("Could not compare a Browser layer type enum")
         return ""
 
     enum_owners = []

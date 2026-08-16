@@ -1,3 +1,5 @@
+import logging
+
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import QgsProject, QgsRasterLayer, QgsVectorLayer
 
@@ -5,36 +7,37 @@ from .storage import add_transparency_slider_enabled, is_separator
 
 try:
     from qgis.core import QgsMapLayerType
-except Exception:
+except ImportError:
     QgsMapLayerType = None
 
 try:
     from qgis.core import Qgis
-except Exception:
+except ImportError:
     Qgis = None
 
 try:
     from qgis.core import QgsMeshLayer
-except Exception:
+except ImportError:
     QgsMeshLayer = None
 
 try:
     from qgis.core import QgsPointCloudLayer
-except Exception:
+except ImportError:
     QgsPointCloudLayer = None
 
 try:
     from qgis.core import QgsVectorTileLayer
-except Exception:
+except ImportError:
     QgsVectorTileLayer = None
 
 try:
     from qgis.core import QgsTiledSceneLayer
-except Exception:
+except ImportError:
     QgsTiledSceneLayer = None
 
 
 PLUGIN_CONTEXT = "FavouriteLayers"
+LOGGER = logging.getLogger(__name__)
 
 
 def tr(message):
@@ -71,8 +74,8 @@ def _enum_value_map():
         if QgsMapLayerType is not None and hasattr(QgsMapLayerType, name):
             try:
                 values[int(getattr(QgsMapLayerType, name))] = name
-            except Exception:
-                pass
+            except (TypeError, ValueError, OverflowError):
+                LOGGER.debug("Could not convert a legacy layer type enum")
 
     if Qgis is not None and hasattr(Qgis, "LayerType"):
         new_names = {
@@ -90,8 +93,8 @@ def _enum_value_map():
             if hasattr(Qgis.LayerType, enum_name):
                 try:
                     values[int(getattr(Qgis.LayerType, enum_name))] = layer_name
-                except Exception:
-                    pass
+                except (TypeError, ValueError, OverflowError):
+                    LOGGER.debug("Could not convert a current layer type enum")
 
     return values
 
@@ -117,8 +120,8 @@ def layer_type_to_name(layer_type):
 
     try:
         return _enum_value_map().get(int(layer_type), "")
-    except Exception:
-        pass
+    except (TypeError, ValueError, OverflowError):
+        LOGGER.debug("Could not convert a layer type value")
 
     enum_name = str(layer_type).split(".")[-1]
     return aliases.get(enum_name, enum_name)
@@ -140,6 +143,7 @@ def _create_vector_tile_layer(uri, name):
     try:
         return QgsVectorTileLayer(uri, name)
     except Exception:
+        LOGGER.debug("Could not construct a vector tile layer")
         return None
 
 
@@ -180,10 +184,11 @@ def create_map_layer(favourite):
             factories.append(lambda: QgsRasterLayer(uri, name, provider_key))
 
     for factory in factories:
+        layer = None
         try:
             layer = factory()
         except Exception:
-            continue
+            LOGGER.debug("A map layer factory could not construct the layer")
         if layer and layer.isValid():
             return layer
 
@@ -210,6 +215,7 @@ def _add_transparency_slider(layer, iface=None):
                 "transparency",
             )
     except Exception:
+        LOGGER.debug("Could not configure the layer transparency widget")
         return
 
     node = QgsProject.instance().layerTreeRoot().findLayer(layer.id())
@@ -226,14 +232,14 @@ def _add_transparency_slider(layer, iface=None):
         if callable(refresh_layer):
             refresh_layer(layer.id())
     except Exception:
-        pass
+        LOGGER.debug("Could not refresh layer symbology")
 
 
 def _load_vector_tile_default_style(layer):
     try:
         layer.loadDefaultStyle()
     except Exception:
-        pass
+        LOGGER.debug("Could not load the vector tile default style")
 
 
 def add_favourite_to_project_with_iface(favourite, iface=None):

@@ -1,4 +1,5 @@
 import json
+import logging
 
 from qgis.PyQt.QtCore import pyqtSignal, QModelIndex, QRect
 from qgis.PyQt.QtGui import QPainter
@@ -30,6 +31,9 @@ from ..storage import (
     normalise_favourite,
 )
 from .common import FAVOURITE_LAYER_MIME, tr, transparency_slider_tooltip
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 class FavouriteListItemDelegate(QStyledItemDelegate):
@@ -91,7 +95,7 @@ class FavouriteListItemDelegate(QStyledItemDelegate):
                     if vp and painter.device() != vp:
                         is_drag_visual = True
                 except Exception:
-                    pass
+                    LOGGER.debug("Could not inspect the favourite list paint device")
 
         if is_drag_visual:
             super().paint(painter, option, index)
