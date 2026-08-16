@@ -255,6 +255,7 @@ class FavouriteLayersPlugin:
         self._rebuild_browser_buttons()
 
     def _populate_menu(self, menu):
+        menu.setToolTipsVisible(False)
         menu.clear()
 
         if self.favourites:
@@ -268,7 +269,6 @@ class FavouriteLayersPlugin:
                     favourite.get("name") or favourite.get("uri"),
                     menu,
                 )
-                action.setToolTip(favourite.get("uri", ""))
                 action.triggered.connect(
                     lambda checked=False, value=favourite: self._add_layer(value)
                 )

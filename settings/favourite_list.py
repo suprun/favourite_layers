@@ -1,7 +1,7 @@
 import json
 import logging
 
-from qgis.PyQt.QtCore import pyqtSignal, QModelIndex, QRect
+from qgis.PyQt.QtCore import pyqtSignal, QModelIndex, QRect, QTimer
 from qgis.PyQt.QtGui import QPainter
 from qgis.PyQt.QtWidgets import (
     QLineEdit,
@@ -30,7 +30,12 @@ from ..storage import (
     is_separator,
     normalise_favourite,
 )
-from .common import FAVOURITE_LAYER_MIME, tr, transparency_slider_tooltip
+from .common import (
+    FAST_TOOLTIP_DELAY_MS,
+    FAVOURITE_LAYER_MIME,
+    tr,
+    transparency_slider_tooltip,
+)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -145,6 +150,8 @@ class FavouriteListItemDelegate(QStyledItemDelegate):
 
 
 class FavouriteListWidget(QListWidget):
+    TRANSPARENCY_TOOLTIP_DELAY_MS = FAST_TOOLTIP_DELAY_MS
+
     favouritesDropped = pyqtSignal(list, int)
     listAboutToChange = pyqtSignal()
     internalMoveFinished = pyqtSignal(bool)
@@ -154,6 +161,13 @@ class FavouriteListWidget(QListWidget):
         super().__init__(parent)
         self._external_drop_row = None
         self._pressed_item_button = None
+        self._transparency_tooltip_row = -1
+        self._transparency_tooltip_global_pos = None
+        self._transparency_tooltip_timer = QTimer(self)
+        self._transparency_tooltip_timer.setSingleShot(True)
+        self._transparency_tooltip_timer.timeout.connect(
+            self._show_fast_transparency_tooltip
+        )
         self.setItemDelegate(FavouriteListItemDelegate(self))
         self.setAcceptDrops(True)
         self.setDragEnabled(True)
@@ -278,6 +292,7 @@ class FavouriteListWidget(QListWidget):
         self.viewport().update()
 
     def mousePressEvent(self, event):
+        self._cancel_fast_transparency_tooltip()
         if event.button() == QT_LEFT_BUTTON:
             button_name, index = self._item_button_at(event_pos(event))
             if index.isValid():
@@ -322,10 +337,19 @@ class FavouriteListWidget(QListWidget):
             self.viewport().setCursor(QT_POINTING_HAND_CURSOR)
         else:
             self.viewport().unsetCursor()
+
+        if button_name == "transparency" and index.isValid():
+            self._schedule_fast_transparency_tooltip(
+                index,
+                event_global_pos(event),
+            )
+        else:
+            self._cancel_fast_transparency_tooltip()
         super().mouseMoveEvent(event)
 
     def leaveEvent(self, event):
         self.viewport().unsetCursor()
+        self._cancel_fast_transparency_tooltip()
         super().leaveEvent(event)
 
     def viewportEvent(self, event):
@@ -334,6 +358,9 @@ class FavouriteListWidget(QListWidget):
             button_name, index = self._item_button_at(pos)
             if index.isValid():
                 if button_name == "transparency":
+                    self._transparency_tooltip_timer.stop()
+                    self._transparency_tooltip_row = index.row()
+                    self._transparency_tooltip_global_pos = event_global_pos(event)
                     tooltip = transparency_slider_tooltip(
                         tr("Add transparency slider when the layer is added")
                     )
@@ -348,8 +375,47 @@ class FavouriteListWidget(QListWidget):
                     rect,
                 )
                 return True
-            QToolTip.hideText()
+            self._cancel_fast_transparency_tooltip()
         return super().viewportEvent(event)
+
+    def _schedule_fast_transparency_tooltip(self, index, global_pos):
+        self._transparency_tooltip_global_pos = global_pos
+        if self._transparency_tooltip_row == index.row():
+            return
+
+        self._cancel_fast_transparency_tooltip()
+        self._transparency_tooltip_row = index.row()
+        self._transparency_tooltip_global_pos = global_pos
+        self._transparency_tooltip_timer.start(
+            self.TRANSPARENCY_TOOLTIP_DELAY_MS
+        )
+
+    def _show_fast_transparency_tooltip(self):
+        global_pos = self._transparency_tooltip_global_pos
+        if global_pos is None:
+            return
+
+        pos = self.viewport().mapFromGlobal(global_pos)
+        button_name, index = self._item_button_at(pos)
+        if button_name != "transparency" or not index.isValid():
+            self._cancel_fast_transparency_tooltip()
+            return
+
+        QToolTip.showText(
+            global_pos,
+            transparency_slider_tooltip(
+                tr("Add transparency slider when the layer is added")
+            ),
+            self.viewport(),
+            self._transparency_button_rect(index),
+        )
+
+    def _cancel_fast_transparency_tooltip(self):
+        self._transparency_tooltip_timer.stop()
+        if self._transparency_tooltip_row >= 0:
+            QToolTip.hideText()
+        self._transparency_tooltip_row = -1
+        self._transparency_tooltip_global_pos = None
 
     def _item_button_at(self, pos):
         index = self.indexAt(pos)

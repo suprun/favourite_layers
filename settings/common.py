@@ -7,6 +7,7 @@ from ..qt_compat import QDIALOG_BUTTON_OK, QT_IBEAM_CURSOR
 
 PLUGIN_CONTEXT = "FavouriteLayers"
 FAVOURITE_LAYER_MIME = "application/x-qgis-favourite-layer"
+FAST_TOOLTIP_DELAY_MS = 200
 
 
 def tr(message):

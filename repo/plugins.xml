@@ -12,6 +12,7 @@
 - Fixed spurious default-style warnings when adding vector tile favourites.
 - Improved transparency toggle appearance and rename editing behaviour.
 - Fixed selection and missed rapid clicks on inline menu item buttons.
+- Removed source address tooltips from favourite menu items.
 - Added a Help button linking to the online documentation.
 - Added an illustrated tooltip for transparency slider toggles.
 - Added a green check mark to enabled inline transparency toggle icons.

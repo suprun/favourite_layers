@@ -1,6 +1,6 @@
 import logging
 
-from qgis.PyQt.QtCore import QAbstractItemModel, QModelIndex, QUrl
+from qgis.PyQt.QtCore import QAbstractItemModel, QModelIndex, QTimer, QUrl
 from qgis.PyQt.QtGui import QDesktopServices
 from qgis.PyQt.QtWidgets import (
     QDialog,
@@ -12,6 +12,7 @@ from qgis.PyQt.QtWidgets import (
     QSizePolicy,
     QSplitter,
     QToolButton,
+    QToolTip,
     QVBoxLayout,
     QWidget,
 )
@@ -47,12 +48,41 @@ from ..storage import (
 from .browser_delegate import BrowserLayerDelegate
 from .browser_model import BrowserLayerProxyModel
 from .browser_tree import BrowserLayerTreeView
-from .common import tr, transparency_slider_tooltip
+from .common import FAST_TOOLTIP_DELAY_MS, tr, transparency_slider_tooltip
 from .favourite_list import FavouriteListWidget
 
 
 HELP_URL = "https://github.com/suprun/favourite_layers/blob/main/README.md"
 LOGGER = logging.getLogger(__name__)
+
+
+class _FastToolTipButton(QToolButton):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._tooltip_timer = QTimer(self)
+        self._tooltip_timer.setSingleShot(True)
+        self._tooltip_timer.timeout.connect(self._show_tooltip)
+
+    def enterEvent(self, event):
+        super().enterEvent(event)
+        self._tooltip_timer.start(FAST_TOOLTIP_DELAY_MS)
+
+    def leaveEvent(self, event):
+        self._tooltip_timer.stop()
+        QToolTip.hideText()
+        super().leaveEvent(event)
+
+    def _show_tooltip(self):
+        tooltip = self.toolTip()
+        if not tooltip or not self.underMouse():
+            return
+
+        QToolTip.showText(
+            self.mapToGlobal(self.rect().bottomLeft()),
+            tooltip,
+            self,
+            self.rect(),
+        )
 
 
 class SettingsDialog(QDialog):
@@ -271,8 +301,9 @@ class SettingsDialog(QDialog):
         label.setMinimumHeight(0)
         return label
 
-    def _tool_button(self, icon, tooltip, slot):
-        button = QToolButton(self)
+    def _tool_button(self, icon, tooltip, slot, fast_tooltip=False):
+        button_class = _FastToolTipButton if fast_tooltip else QToolButton
+        button = button_class(self)
         button.setIcon(icon)
         button.setToolTip(tooltip)
         button.setAutoRaise(True)
@@ -295,6 +326,7 @@ class SettingsDialog(QDialog):
                 tr("Add transparency slider when the layer is added")
             ),
             self._toggle_selected_transparency_slider,
+            fast_tooltip=True,
         )
         self.transparency_button.setCheckable(True)
         self.undo_button = self._tool_button(
@@ -369,7 +401,6 @@ class SettingsDialog(QDialog):
             layer_icon(favourite),
             favourite.get("name") or favourite.get("uri"),
         )
-        item.setToolTip(favourite.get("uri", ""))
         item.setData(QT_USER_ROLE, favourite)
         item.setFlags(item.flags() | QT_ITEM_IS_EDITABLE)
         return item

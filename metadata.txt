@@ -9,6 +9,7 @@ changelog=What's new in version 1.3.0:
     - Added an illustrated tooltip for transparency slider toggles.
     - Fixed spurious default-style warnings when adding vector tile favourites.
     - Fixed selection and missed rapid clicks on inline menu item buttons.
+    - Removed source address tooltips from favourite menu items.
     - Added a Help button linking to the online documentation.
     - Fixed Source Information context menu readability in the light theme.
     - Replaced silent exception handling with narrow QGIS/Qt fallbacks and safe diagnostics.
