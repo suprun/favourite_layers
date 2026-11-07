@@ -53,6 +53,30 @@ After installation, the plugin adds:
 - a **Favourite Layers** toolbar button with a drop-down menu;
 - a **Favourite Layers** submenu in the QGIS **Layer** menu.
 
+## Updating local QGIS profiles
+
+Use the profile updater from the project directory:
+
+```powershell
+python -B repo/restore.py
+python -B scripts/sync_to_qgis_profiles.py --dry-run
+python -B scripts/sync_to_qgis_profiles.py
+```
+
+By default, only existing Favourite Layers installations in QGIS3 and QGIS4
+profiles are updated. Use `--profile default` to select that profile, or select
+another existing profile explicitly to install the plugin there for the first
+time. Use `--profiles-root PATH` for a custom profiles directory.
+
+The updater rejects stale packages, verifies installed file hashes and keeps
+previous copies under `<profile>/plugin-backups/favourite_layers/`. A failure
+rolls back all profiles in the current batch. `--backup-root PATH` changes the
+backup location; it must be on the same filesystem as the plugin directories.
+QGIS settings and the saved favourite list are not changed.
+
+Updates are allowed while QGIS is running. Restart QGIS or reload the plugin
+afterwards so the updated Python code is loaded.
+
 ## Transparency Slider
 
 ![Transparency slider tooltip](tranparency.PNG)

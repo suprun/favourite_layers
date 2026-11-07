@@ -76,13 +76,12 @@ description[zh_CN]=通过工具栏按钮或图层菜单，快速添加 QGIS 浏�
 about[zh_CN]=添加一个带有收藏图层下拉菜单的工具栏按钮，并在 QGIS 的图层菜单中添加相同的子菜单。您可以在设置对话框中添加图层和调整顺序。列表保存在当前 QGIS 用户配置中。
 description[zh_TW]=透過工具列按鈕或圖層選單，快速加入 QGIS 瀏覽器中的最愛圖層。
 about[zh_TW]=新增一個具有最愛圖層下拉選單的工具列按鈕，並在 QGIS 的圖層選單中新增相同的子選單。您可以在設定對話方塊中新增圖層及調整順序。清單儲存在目前的 QGIS 使用者設定檔中。
-version=1.3.2
-changelog=What's new in version 1.3.2:
+version=1.3.1
+changelog=What's new in version 1.3.1:
     - Escaped layer source details before rendering HTML.
     - Ignored malformed favourite entries in drag-and-drop data.
     - Packaged runtime files explicitly without Git subprocesses or development files.
     - Added localized descriptions and about text for all 37 plugin languages.
-  What's new in version 1.3.1:
     - Prevented settings splitter panels from collapsing and sized the right minimum from its font and toolbar controls.
     - Added translations for AR (Arabic), BG (Bulgarian), CA (Catalan),
     CS (Czech), DA (Danish), EL (Greek), ET (Estonian), FI (Finnish),
