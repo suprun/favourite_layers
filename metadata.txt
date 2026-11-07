@@ -2,8 +2,87 @@
 name=Favourite Layers
 description=Quickly add favorite QGIS browser layers from a toolbar button or the Layer menu.
 about=Adds a custom toolbar button with a drop-down menu of your favorite layers and adds the same Favourite Layers submenu to the QGIS Layer menu. Layers can be added and reordered in the settings dialog. The list is stored in the current QGIS user profile.
-version=1.3.1
-changelog=What's new in version 1.3.1:
+description[ar]=أضف بسرعة طبقاتك المفضلة من متصفح QGIS باستخدام زر شريط الأدوات أو قائمة الطبقة.
+about[ar]=يضيف زرًا إلى شريط الأدوات مع قائمة منسدلة لطبقاتك المفضلة، ويضيف القائمة الفرعية نفسها إلى قائمة الطبقة في QGIS. يمكنك إضافة الطبقات وتغيير ترتيبها في نافذة الإعدادات. تُحفظ القائمة في ملف تعريف مستخدم QGIS الحالي.
+description[bg]=Добавяйте бързо любими слоеве от браузъра на QGIS чрез бутон в лентата с инструменти или менюто „Слой“.
+about[bg]=Добавя бутон в лентата с инструменти с падащо меню за любимите ви слоеве и същото подменю в менюто „Слой“ на QGIS. Слоевете могат да се добавят и пренареждат в прозореца с настройки. Списъкът се съхранява в текущия потребителски профил на QGIS.
+description[ca]=Afegiu ràpidament capes preferides del navegador del QGIS des d'un botó de la barra d'eines o del menú Capa.
+about[ca]=Afegeix un botó a la barra d'eines amb un menú desplegable de les capes preferides i el mateix submenú al menú Capa del QGIS. Podeu afegir capes i canviar-ne l'ordre al diàleg de configuració. La llista es desa al perfil d'usuari actual del QGIS.
+description[cs]=Rychle přidávejte oblíbené vrstvy z prohlížeče QGIS tlačítkem na panelu nástrojů nebo z nabídky Vrstva.
+about[cs]=Přidává tlačítko na panel nástrojů s rozbalovací nabídkou oblíbených vrstev a stejnou podnabídku do nabídky Vrstva v QGIS. Vrstvy lze přidávat a měnit jejich pořadí v dialogu nastavení. Seznam se ukládá do aktuálního uživatelského profilu QGIS.
+description[da]=Tilføj hurtigt favoritlag fra QGIS-browseren via en knap på værktøjslinjen eller menuen Lag.
+about[da]=Tilføjer en knap på værktøjslinjen med en rullemenu med dine favoritlag og den samme undermenu i QGIS-menuen Lag. Lag kan tilføjes og omarrangeres i indstillingsdialogen. Listen gemmes i den aktuelle QGIS-brugerprofil.
+description[de]=Fügen Sie bevorzugte Layer aus dem QGIS-Browser schnell über eine Schaltfläche in der Werkzeugleiste oder das Menü Layer hinzu.
+about[de]=Fügt eine Schaltfläche in der Werkzeugleiste mit einem Auswahlmenü Ihrer bevorzugten Layer und das gleiche Untermenü im QGIS-Menü Layer hinzu. Im Einstellungsdialog können Layer hinzugefügt und neu angeordnet werden. Die Liste wird im aktuellen QGIS-Benutzerprofil gespeichert.
+description[el]=Προσθέστε γρήγορα αγαπημένα επίπεδα από τον περιηγητή του QGIS μέσω κουμπιού στη γραμμή εργαλείων ή του μενού Επίπεδο.
+about[el]=Προσθέτει ένα κουμπί στη γραμμή εργαλείων με αναπτυσσόμενο μενού των αγαπημένων σας επιπέδων και το ίδιο υπομενού στο μενού Επίπεδο του QGIS. Μπορείτε να προσθέσετε επίπεδα και να αλλάξετε τη σειρά τους στο παράθυρο ρυθμίσεων. Η λίστα αποθηκεύεται στο τρέχον προφίλ χρήστη του QGIS.
+description[en]=Quickly add favorite QGIS browser layers from a toolbar button or the Layer menu.
+about[en]=Adds a custom toolbar button with a drop-down menu of your favorite layers and adds the same Favourite Layers submenu to the QGIS Layer menu. Layers can be added and reordered in the settings dialog. The list is stored in the current QGIS user profile.
+description[es]=Añada rápidamente capas favoritas del navegador de QGIS desde un botón de la barra de herramientas o el menú Capa.
+about[es]=Añade un botón a la barra de herramientas con un menú desplegable de sus capas favoritas y el mismo submenú al menú Capa de QGIS. Puede añadir capas y cambiar su orden en el diálogo de configuración. La lista se guarda en el perfil de usuario actual de QGIS.
+description[et]=Lisage QGIS-i brauserist lemmikkihte kiiresti tööriistariba nupu või menüü Kiht kaudu.
+about[et]=Lisab tööriistaribale nupu lemmikkihtide rippmenüüga ning sama alammenüü QGIS-i menüüsse Kiht. Kihte saab lisada ja nende järjekorda muuta seadistusaknas. Loend salvestatakse praegusesse QGIS-i kasutajaprofiili.
+description[fi]=Lisää suosikkitasoja QGIS-selaimesta nopeasti työkalupalkin painikkeella tai Taso-valikosta.
+about[fi]=Lisää työkalupalkkiin painikkeen, jonka avattavassa valikossa ovat suosikkitasosi, sekä saman alivalikon QGISin Taso-valikkoon. Tasoja voi lisätä ja niiden järjestystä muuttaa asetusikkunassa. Luettelo tallennetaan nykyiseen QGIS-käyttäjäprofiiliin.
+description[fr]=Ajoutez rapidement des couches favorites de l'explorateur QGIS depuis un bouton de la barre d'outils ou le menu Couche.
+about[fr]=Ajoute un bouton à la barre d'outils avec un menu déroulant de vos couches favorites et le même sous-menu au menu Couche de QGIS. Vous pouvez ajouter des couches et modifier leur ordre dans la fenêtre de configuration. La liste est enregistrée dans le profil utilisateur QGIS actuel.
+description[hr]=Brzo dodajte omiljene slojeve iz preglednika QGIS-a pomoću gumba na alatnoj traci ili izbornika Sloj.
+about[hr]=Dodaje gumb na alatnu traku s padajućim izbornikom omiljenih slojeva i isti podizbornik u izbornik Sloj u QGIS-u. Slojeve možete dodavati i mijenjati njihov redoslijed u dijaloškom okviru postavki. Popis se sprema u trenutačni korisnički profil QGIS-a.
+description[hu]=Adjon hozzá gyorsan kedvenc rétegeket a QGIS böngészőjéből egy eszköztárgombbal vagy a Réteg menüből.
+about[hu]=Egy eszköztárgombot ad hozzá a kedvenc rétegek legördülő menüjével, valamint ugyanazt az almenüt a QGIS Réteg menüjéhez. A rétegek a beállítások ablakában hozzáadhatók és átrendezhetők. A lista az aktuális QGIS-felhasználói profilban tárolódik.
+description[id]=Tambahkan layer favorit dari Peramban QGIS dengan cepat melalui tombol bilah alat atau menu Layer.
+about[id]=Menambahkan tombol bilah alat dengan menu tarik-turun berisi layer favorit Anda serta submenu yang sama ke menu Layer QGIS. Layer dapat ditambahkan dan diurutkan ulang dalam dialog pengaturan. Daftar disimpan dalam profil pengguna QGIS saat ini.
+description[it]=Aggiungi rapidamente i layer preferiti dal Browser di QGIS tramite un pulsante della barra degli strumenti o il menu Layer.
+about[it]=Aggiunge un pulsante alla barra degli strumenti con un menu a discesa dei layer preferiti e lo stesso sottomenu al menu Layer di QGIS. Puoi aggiungere i layer e cambiarne l'ordine nella finestra delle impostazioni. L'elenco viene salvato nel profilo utente QGIS corrente.
+description[ja]=ツールバーのボタンまたはレイヤメニューから、QGISブラウザのお気に入りレイヤをすばやく追加します。
+about[ja]=お気に入りレイヤのドロップダウンメニューを持つボタンをツールバーに追加し、QGISのレイヤメニューにも同じサブメニューを追加します。設定ダイアログでレイヤの追加や並べ替えができます。一覧は現在のQGISユーザープロファイルに保存されます。
+description[ko]=도구 모음 버튼이나 레이어 메뉴에서 QGIS 탐색기의 즐겨찾는 레이어를 빠르게 추가합니다.
+about[ko]=즐겨찾는 레이어의 드롭다운 메뉴가 있는 도구 모음 버튼을 추가하고 QGIS 레이어 메뉴에도 같은 하위 메뉴를 추가합니다. 설정 대화상자에서 레이어를 추가하고 순서를 변경할 수 있습니다. 목록은 현재 QGIS 사용자 프로필에 저장됩니다.
+description[lt]=Greitai pridėkite mėgstamus QGIS naršyklės sluoksnius naudodami įrankių juostos mygtuką arba meniu „Sluoksnis“.
+about[lt]=Prideda įrankių juostos mygtuką su mėgstamų sluoksnių išskleidžiamuoju meniu ir tokį patį pomeniu į QGIS meniu „Sluoksnis“. Nustatymų lange galima pridėti sluoksnius ir keisti jų tvarką. Sąrašas saugomas dabartiniame QGIS naudotojo profilyje.
+description[lv]=Ātri pievienojiet iecienītos QGIS pārlūka slāņus ar rīkjoslas pogu vai izvēlni Slānis.
+about[lv]=Pievieno rīkjoslas pogu ar iecienīto slāņu nolaižamo izvēlni un tādu pašu apakšizvēlni QGIS izvēlnei Slānis. Iestatījumu dialogā var pievienot slāņus un mainīt to secību. Saraksts tiek saglabāts pašreizējā QGIS lietotāja profilā.
+description[nb]=Legg raskt til favorittlag fra QGIS-nettleseren med en knapp på verktøylinjen eller fra Lag-menyen.
+about[nb]=Legger til en knapp på verktøylinjen med en rullegardinmeny for favorittlagene dine og den samme undermenyen i Lag-menyen i QGIS. Lag kan legges til og omorganiseres i innstillingsdialogen. Listen lagres i den gjeldende QGIS-brukerprofilen.
+description[nl]=Voeg snel favoriete lagen uit de QGIS-browser toe via een knop op de werkbalk of het menu Laag.
+about[nl]=Voegt een werkbalkknop toe met een keuzemenu voor uw favoriete lagen en hetzelfde submenu aan het menu Laag van QGIS. U kunt lagen toevoegen en de volgorde wijzigen in het instellingenvenster. De lijst wordt opgeslagen in het huidige QGIS-gebruikersprofiel.
+description[pl]=Szybko dodawaj ulubione warstwy z przeglądarki QGIS za pomocą przycisku na pasku narzędzi lub menu Warstwa.
+about[pl]=Dodaje przycisk na pasku narzędzi z rozwijanym menu ulubionych warstw oraz takie samo podmenu w menu Warstwa programu QGIS. Warstwy można dodawać i zmieniać ich kolejność w oknie ustawień. Lista jest zapisywana w bieżącym profilu użytkownika QGIS.
+description[pt]=Adicione rapidamente camadas favoritas do navegador do QGIS através de um botão na barra de ferramentas ou do menu Camada.
+about[pt]=Adiciona um botão à barra de ferramentas com um menu pendente das suas camadas favoritas e o mesmo submenu ao menu Camada do QGIS. Pode adicionar camadas e alterar a sua ordem na janela de configurações. A lista é guardada no perfil de utilizador atual do QGIS.
+description[pt_BR]=Adicione rapidamente camadas favoritas do navegador do QGIS por um botão na barra de ferramentas ou pelo menu Camada.
+about[pt_BR]=Adiciona um botão à barra de ferramentas com um menu suspenso das suas camadas favoritas e o mesmo submenu ao menu Camada do QGIS. Você pode adicionar camadas e alterar sua ordem na janela de configurações. A lista é salva no perfil de usuário atual do QGIS.
+description[ro]=Adăugați rapid straturi favorite din navigatorul QGIS folosind un buton din bara de instrumente sau meniul Strat.
+about[ro]=Adaugă un buton în bara de instrumente cu un meniu derulant al straturilor favorite și același submeniu în meniul Strat din QGIS. Straturile pot fi adăugate și reordonate în dialogul de configurare. Lista este salvată în profilul de utilizator QGIS curent.
+description[ru]=Быстро добавляйте избранные слои из браузера QGIS с помощью кнопки панели инструментов или меню «Слой».
+about[ru]=Добавляет кнопку панели инструментов с раскрывающимся меню избранных слоёв и такое же подменю в меню «Слой» QGIS. Слои можно добавлять и менять их порядок в окне настроек. Список сохраняется в текущем профиле пользователя QGIS.
+description[sk]=Rýchlo pridávajte obľúbené vrstvy z prehliadača QGIS tlačidlom na paneli nástrojov alebo z ponuky Vrstva.
+about[sk]=Pridáva tlačidlo na panel nástrojov s rozbaľovacou ponukou obľúbených vrstiev a rovnakú podponuku do ponuky Vrstva v QGIS. Vrstvy možno pridávať a meniť ich poradie v dialógovom okne nastavení. Zoznam sa ukladá do aktuálneho používateľského profilu QGIS.
+description[sl]=Hitro dodajte priljubljene sloje iz brskalnika QGIS z gumbom v orodni vrstici ali iz menija Sloj.
+about[sl]=Doda gumb v orodno vrstico s spustnim menijem priljubljenih slojev in isti podmeni v meni Sloj v QGIS. Sloje lahko dodajate in spreminjate njihov vrstni red v pogovornem oknu nastavitev. Seznam se shrani v trenutni uporabniški profil QGIS.
+description[sr]=Брзо додајте омиљене слојеве из QGIS прегледача помоћу дугмета на траци са алаткама или менија Слој.
+about[sr]=Додаје дугме на траку са алаткама са падајућим менијем омиљених слојева и исти подмени у мени Слој у QGIS-у. Слојеве можете додавати и мењати њихов редослед у прозору подешавања. Списак се чува у тренутном QGIS корисничком профилу.
+description[sv]=Lägg snabbt till favoritlager från QGIS-bläddraren via en knapp i verktygsfältet eller menyn Lager.
+about[sv]=Lägger till en knapp i verktygsfältet med en rullgardinsmeny för dina favoritlager och samma undermeny i QGIS-menyn Lager. Lager kan läggas till och ordnas om i inställningsdialogen. Listan sparas i den aktuella QGIS-användarprofilen.
+description[th]=เพิ่มชั้นข้อมูลโปรดจากเบราว์เซอร์ QGIS ได้อย่างรวดเร็วผ่านปุ่มบนแถบเครื่องมือหรือเมนูชั้นข้อมูล
+about[th]=เพิ่มปุ่มบนแถบเครื่องมือพร้อมเมนูแบบเลื่อนลงของชั้นข้อมูลโปรด และเพิ่มเมนูย่อยเดียวกันในเมนูชั้นข้อมูลของ QGIS คุณสามารถเพิ่มชั้นข้อมูลและเปลี่ยนลำดับได้ในกล่องโต้ตอบการตั้งค่า รายการจะถูกบันทึกไว้ในโปรไฟล์ผู้ใช้ QGIS ปัจจุบัน
+description[tr]=QGIS Tarayıcısı'ndaki sık kullanılan katmanları araç çubuğu düğmesinden veya Katman menüsünden hızla ekleyin.
+about[tr]=Araç çubuğuna sık kullanılan katmanlarınızı içeren açılır menülü bir düğme ve QGIS Katman menüsüne aynı alt menüyü ekler. Ayarlar penceresinde katman ekleyebilir ve katmanların sırasını değiştirebilirsiniz. Liste, geçerli QGIS kullanıcı profilinde saklanır.
+description[uk]=Швидко додавайте улюблені шари з Браузера QGIS за допомогою кнопки панелі інструментів або меню «Шар».
+about[uk]=Додає кнопку панелі інструментів із випадаючим меню улюблених шарів і таке саме підменю до меню «Шар» QGIS. Шари можна додавати та змінювати їхній порядок у вікні налаштувань. Список зберігається в поточному профілі користувача QGIS.
+description[vi]=Thêm nhanh các lớp yêu thích từ Trình duyệt QGIS bằng nút trên thanh công cụ hoặc trình đơn Lớp.
+about[vi]=Thêm nút trên thanh công cụ với trình đơn thả xuống chứa các lớp yêu thích và trình đơn con tương tự vào trình đơn Lớp của QGIS. Bạn có thể thêm lớp và thay đổi thứ tự trong hộp thoại cài đặt. Danh sách được lưu trong hồ sơ người dùng QGIS hiện tại.
+description[zh_CN]=通过工具栏按钮或图层菜单，快速添加 QGIS 浏览器中的收藏图层。
+about[zh_CN]=添加一个带有收藏图层下拉菜单的工具栏按钮，并在 QGIS 的图层菜单中添加相同的子菜单。您可以在设置对话框中添加图层和调整顺序。列表保存在当前 QGIS 用户配置中。
+description[zh_TW]=透過工具列按鈕或圖層選單，快速加入 QGIS 瀏覽器中的最愛圖層。
+about[zh_TW]=新增一個具有最愛圖層下拉選單的工具列按鈕，並在 QGIS 的圖層選單中新增相同的子選單。您可以在設定對話方塊中新增圖層及調整順序。清單儲存在目前的 QGIS 使用者設定檔中。
+version=1.3.2
+changelog=What's new in version 1.3.2:
+    - Escaped layer source details before rendering HTML.
+    - Ignored malformed favourite entries in drag-and-drop data.
+    - Packaged runtime files explicitly without Git subprocesses or development files.
+    - Added localized descriptions and about text for all 37 plugin languages.
+  What's new in version 1.3.1:
     - Prevented settings splitter panels from collapsing and sized the right minimum from its font and toolbar controls.
     - Added translations for AR (Arabic), BG (Bulgarian), CA (Catalan),
     CS (Czech), DA (Danish), EL (Greek), ET (Estonian), FI (Finnish),

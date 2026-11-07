@@ -45,11 +45,13 @@ class SourceInfoDialog(QDialog):
             "QTextBrowser { background: transparent; border: none; }"
         )
 
-        name = favourite.get("name") or favourite.get("uri") or tr("Unknown")
-        uri = favourite.get("uri") or ""
-        provider = favourite.get("provider_key") or tr("Unknown")
-        layer_type = favourite.get("layer_type") or tr("Unknown")
-        path = favourite.get("path") or ""
+        name = escape(str(
+            favourite.get("name") or favourite.get("uri") or tr("Unknown")
+        ))
+        uri = escape(str(favourite.get("uri") or ""))
+        provider = escape(str(favourite.get("provider_key") or tr("Unknown")))
+        layer_type = escape(str(favourite.get("layer_type") or tr("Unknown")))
+        path = escape(str(favourite.get("path") or tr("None")))
 
         # Формуємо HTML вміст
         html = f"""
@@ -69,7 +71,7 @@ class SourceInfoDialog(QDialog):
             </tr>
             <tr>
                 <td style="font-weight: bold; border-bottom: 1px solid gray;">{tr("Path")}:</td>
-                <td style="border-bottom: 1px solid gray;">{path if path else tr("None")}</td>
+                <td style="border-bottom: 1px solid gray;">{path}</td>
             </tr>
             <tr>
                 <td style="font-weight: bold; vertical-align: top; border-bottom: 1px solid gray;">{tr("Source URI")}:</td>

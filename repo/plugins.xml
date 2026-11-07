@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugins>
-  <pyqgis_plugin name="Favourite Layers" version="1.3.1">
+  <pyqgis_plugin name="Favourite Layers" version="1.3.2">
     <description><![CDATA[Quickly add favorite QGIS browser layers from a toolbar button or the Layer menu.]]></description>
     <about><![CDATA[Adds a custom toolbar button with a drop-down menu of your favorite layers and adds the same Favourite Layers submenu to the QGIS Layer menu. Layers can be added and reordered in the settings dialog. The list is stored in the current QGIS user profile.]]></about>
 
-    <version>1.3.1</version>
-    <changelog><![CDATA[What's new in version 1.3.1:
+    <version>1.3.2</version>
+    <changelog><![CDATA[What's new in version 1.3.2:
+- Escaped layer source details before rendering HTML.
+- Ignored malformed favourite entries in drag-and-drop data.
+- Packaged runtime files explicitly without Git subprocesses or development files.
+- Added localized descriptions and about text for all 37 plugin languages.
+
+What's new in version 1.3.1:
 - Prevented settings splitter panels from collapsing and sized the right minimum from its font and toolbar controls.
 
 What's new in version 1.3.0:

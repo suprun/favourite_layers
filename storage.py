@@ -48,7 +48,7 @@ def add_transparency_slider_enabled(item):
 
 
 def normalise_favourite(item):
-    item = item or {}
+    item = item if isinstance(item, dict) else {}
     if is_separator(item):
         return separator_item()
 
